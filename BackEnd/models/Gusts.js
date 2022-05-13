@@ -17,14 +17,6 @@ const GustSchema = new Schema({
         required: true,
     },
 
-    DateOfBirth: {
-        type: String,
-    },
-
-    email: {
-        type: String,
-    },
-
     phone: {
         type: String,
     },

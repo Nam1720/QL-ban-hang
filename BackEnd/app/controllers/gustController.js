@@ -22,6 +22,7 @@ class gustController {
             return res.status(200).json({
                 success: true,
                 message: 'Đã tạo khách hàng thành công!',
+                newGust
             })
         } catch (error) {
             res.status(200).json({

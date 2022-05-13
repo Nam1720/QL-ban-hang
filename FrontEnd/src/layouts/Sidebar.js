@@ -25,7 +25,7 @@ const Sidebar = () => {
       className="site-layout-background"
     >
       {/* <div className="logo"><img src={Logo} /></div> */}
-      <PermissionRoute navConfig={navigation} theme="dark" mode="inline"  />
+      <PermissionRoute navConfig={navigation} theme="light" mode="inline"  />
       <i onClick={toggleSidebar} className={
         collapse ? 'icon-arrow-left icon-nav icon-nav__close' : 'icon-arrow-left icon-nav icon-nav__open'
       }></i>

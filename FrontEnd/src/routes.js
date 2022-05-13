@@ -3,10 +3,12 @@ import React from 'react';
 import * as AUTH from 'auth/_store/constants'
 const Dashboard = React.lazy(() => import('dashboard/_views'));
 const DanhMuc = React.lazy(() => import('../src/modules/DanhMuc/_views'));
+const Guest = React.lazy(() => import('../src/modules/Guest/_view'))
 
 const routes = [
   { path: '/', exact: true, name: AUTH.MODULE_DASHBOARD , component: Dashboard },
-  { path: '/danh-muc', exact: true, name: AUTH.MODULE_DASHBOARD , component: DanhMuc }, 
+  { path: '/danh-muc', exact: true, name: AUTH.MODULE_DASHBOARD , component: DanhMuc },
+  { path: '/khach-hang', exact: true, name: AUTH.MODULE_DASHBOARD , component: Guest },  
   
 ]
 

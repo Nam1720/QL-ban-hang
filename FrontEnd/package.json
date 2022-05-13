@@ -21,6 +21,7 @@
   "author": "NIW_React_Team",
   "license": "ISC",
   "dependencies": {
+    "@ant-design/icons": "^4.7.0",
     "@reduxjs/toolkit": "^1.5.0",
     "antd": "^4.8.5",
     "axios": "^0.21.0",

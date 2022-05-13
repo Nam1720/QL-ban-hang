@@ -3,12 +3,12 @@ import { useDispatch } from 'react-redux';
 import { setCustomSize } from 'modules/Commons/_store/commonSlice';
 import { Menu, Dropdown, Typography } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
-import { destroyLogged , getAuth } from 'utils/jwt';
+import { destroyLogged, getAuth } from 'utils/jwt';
 import useRouter from 'hooks/useRouter';
 import useCurrentWidth from 'hooks/useCurrentWidth';
 import Logo from 'src/assets/images/logo-masothue.png';
 import { useTranslation } from 'react-i18next';
-import {isEmpty} from 'helpers/funcs'
+import { isEmpty } from 'helpers/funcs';
 import { saveAuth } from 'utils/jwt';
 
 const { Text } = Typography;
@@ -21,17 +21,17 @@ const Header = () => {
   const authInfo = getAuth();
   const breakpoint = 1367;
   const width = useCurrentWidth();
-  const dispatch = useDispatch(); 
+  const dispatch = useDispatch();
   const changeLanguage = (key) => {
     switch (key) {
-    case 'vi':
-      setLanguage('Vietnamese');
-      i18n.changeLanguage(key);
-      break;
-    case 'en':
-      setLanguage('English');
-      i18n.changeLanguage(key);
-      break;
+      case 'vi':
+        setLanguage('Vietnamese');
+        i18n.changeLanguage(key);
+        break;
+      case 'en':
+        setLanguage('English');
+        i18n.changeLanguage(key);
+        break;
     }
   };
   const menu = (
@@ -65,7 +65,7 @@ const Header = () => {
   return (
     <header className="header d-flex justify-content-between align-items-center">
       <div className="logo">
-        <img src={Logo} height={50}/>
+        <img src={Logo} height={50} />
       </div>
       <div className="d-flex header__right">
         <Dropdown
@@ -88,7 +88,11 @@ const Header = () => {
         >
           <div className="cusor-pointer">
             <i className="icon-user3 pr-1"></i>
-            <Text strong>{ authInfo && !isEmpty(authInfo.userName) ? authInfo.userName : 'Update'}</Text>
+            <Text strong>
+              {authInfo && !isEmpty(authInfo.userName)
+                ? authInfo.userName
+                : 'Update'}
+            </Text>
           </div>
         </Dropdown>
       </div>

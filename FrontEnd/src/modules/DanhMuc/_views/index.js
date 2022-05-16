@@ -1,10 +1,15 @@
+import { Divider } from 'antd';
 import React from 'react';
+import Filter from '../_components/Filter';
+import TableData from '../_components/TableData';
 import '../_styles/style.scss';
 
 const DanhMuc = () => {
   return (
     <div>
-      <h1>Hello</h1>
+      <Filter />
+      <Divider />
+      <TableData />
     </div>
   );
 };

@@ -6,6 +6,7 @@ const PORT = process.env.PORT || 3000;
 const router = require('./router');
 const handlebars = require('express-handlebars');
 
+
 const methodOverride = require('method-override');
 // const cookieParser = require('cookie-parser');
 const http = require("http");
@@ -13,6 +14,10 @@ const http = require("http");
 var server = http.createServer(app);
 
 var request = require('request');
+
+// config cors
+var cors = require('cors')
+app.use(cors())
 
 // Connect MongoDB
 const mongoose = require('mongoose')

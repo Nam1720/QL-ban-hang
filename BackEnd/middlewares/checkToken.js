@@ -61,7 +61,7 @@ exports.checkTokenAll = (req, res, next) => {
             const decoded = jwt.verify(tokenAdmin, 'adminngominhthuan')
             req.userId = decoded.userId
             req.username = decoded.username
-            req.name = decoded.usernmae
+            req.name = decoded.username
             return next()
         }
 

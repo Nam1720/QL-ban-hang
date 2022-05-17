@@ -17,11 +17,11 @@ const GustSchema = new Schema({
         required: true,
     },
 
-    phone: {
+    phoneGust: {
         type: String,
     },
 
-    address: {
+    addressGust: {
         type: String,
     },
 

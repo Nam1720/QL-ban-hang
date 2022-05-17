@@ -137,7 +137,7 @@ class userController {
         const { findUsername } = req.body
 
         try {
-            const listFind = await User.find({ username: { $regex: findUsername } })
+            const listFind = await User.find({ username: { $regex: findUsername, $options: 'i' } })
 
             return res.status(200).json({
                 success: true,

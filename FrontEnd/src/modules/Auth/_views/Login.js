@@ -5,8 +5,8 @@ import {setLoginStatus } from 'auth/_store/authSlice';
 import useRouter from 'hooks/useRouter';
 import { saveAuth, saveToken } from 'utils/jwt';
 import Logo from 'assets/images/logo-masothue.png';
-import { VALIDATE_MESSAGES, KEY } from 'modules/Commons/_store/constants';
-import { login , getProfile } from '../_api';
+import { VALIDATE_MESSAGES } from 'modules/Commons/_store/constants';
+import { login } from '../_api';
 
 import './../_styles/login.scss';
 import { openNotificationWithIcon } from 'helpers/funcs';
@@ -27,20 +27,30 @@ const Login = () => {
     const {email, password} =  values;
     setLoading(true)
     login(email,password).then(res => {
-      if (res && res.data.status === KEY.SUCCESS) {
-        console.log(res.data, 'data login')
-        const user = res.data.data
-        saveToken(user.token);
-        getProfile().then(res => {
-          if (res && res.data.status === KEY.SUCCESS) {
-            const profile = res.data.data;
-            console.log(profile,'profile');
-            saveAuth(profile);
-            dispatch(setLoginStatus(true))
-            router.push('/');
-          }
-        })
+      if (res.data.success) {
+        saveToken(res.data.accessToken)
+        saveAuth(res.data.username)
+        dispatch(setLoginStatus(true))
+        router.push('/');
+      } else {
+        openNotificationWithIcon('error', res.data.message)
       }
+
+
+      // if (res && res.data.status === KEY.SUCCESS) {
+      //   console.log(res.data, 'data login')
+      //   const user = res.data.data
+      //   saveToken(user.token);
+      //   getProfile().then(res => {
+      //     if (res && res.data.status === KEY.SUCCESS) {
+      //       const profile = res.data.data;
+      //       console.log(profile,'profile');
+      //       saveAuth(profile);
+      //       dispatch(setLoginStatus(true))
+      //       router.push('/');
+      //     }
+      //   })
+      // }
     }).catch (error => {
       openNotificationWithIcon('error', error)
     }).finally(() => setLoading(false));

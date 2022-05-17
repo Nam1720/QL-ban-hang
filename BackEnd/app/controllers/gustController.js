@@ -3,7 +3,8 @@ const Gusts = require('../../models/Gusts')
 class gustController {
     // [POST] /api/gust/create
     async create(req, res) {
-        const { nameGust, DateOfBirth, email, phone, address } = req.body
+        const { nameGust, phoneGust, addressGust } = req.body
+        console.log(req.body)
 
         try {
             const Gust = await Gusts.find({})
@@ -12,10 +13,8 @@ class gustController {
                 codeGust: `KH${Gust.length + 1}`,
                 nameSeller: req.name,
                 nameGust: nameGust,
-                DateOfBirth: DateOfBirth != '' ? DateOfBirth : '',
-                email: email != '' ? email : '',
-                phone: phone != '' ? phone : '',
-                address: address != '' ? address : ''
+                phoneGust: phoneGust != '' ? phoneGust : '',
+                addressGust: addressGust != '' ? addressGust : ''
             })
             await newGust.save()
 
@@ -54,22 +53,24 @@ class gustController {
 
     // [POST] /api/gust/update
     async update(req, res) {
-        const { codeGust, nameGust, DateOfBirth, email, phone, address } = req.body
+        const { codeGust, nameGust, phoneGust, addressGust } = req.body
 
         try {
-            await Gusts.updateOne( { codeGust }, {
+            await Gusts.updateOne({ codeGust }, {
                 nameGust: nameGust,
-                DateOfBirth: DateOfBirth != '' ? DateOfBirth : '',
-                email: email != '' ? email : '',
-                phone: phone != '' ? phone : '',
-                address: address != '' ? address : ''
+                phoneGust: phoneGust != '' ? phoneGust : '',
+                addressGust: addressGust != '' ? addressGust : ''
             })
+
+            const listGuest = await Gusts.find({})
 
             return res.status(200).json({
                 success: true,
                 message: 'Đã cập nhật khách hàng thành công!',
+                listGuest
             })
         } catch (error) {
+            console.log(error)
             res.status(200).json({
                 success: false,
                 message: 'Đã lỗi xảy ra, vui lòng thử lại!',
@@ -85,10 +86,53 @@ class gustController {
         try {
             await Gusts.deleteOne({ codeGust })
 
+            const listGust = await Gusts.find({})
+
             return res.status(200).json({
                 success: true,
-                message: `Xóa khách hàng ${codeGust} thành công!`
+                message: `Xóa khách hàng ${codeGust} thành công!`,
+                listGust
             })
+        } catch (error) {
+            res.json({
+                success: false,
+                message: 'Đã lỗi xảy ra, vui lòng thử lại!',
+                error
+            })
+        }
+    }
+
+    // [POST] /api/invoice/find
+    async find(req, res) {
+        const { find } = req.body
+        
+        try {
+            if (find != '') {
+                const arrayFind = new Array
+                const codeFind = await Gusts.find({ codeGust: { $regex: find, $options: 'i' } })
+                const nameFind = await Gusts.find({ nameGust: { $regex: find, $options: 'i' } })
+                const phoneFind = await Gusts.find({ phoneGust: { $regex: find, $options: 'i' } })
+                const addressFind = await Gusts.find({ addressGust: { $regex: find, $options: 'i' } })
+
+                arrayFind.push(...codeFind)
+                arrayFind.push(...nameFind)
+                arrayFind.push(...phoneFind)
+                arrayFind.push(...addressFind)
+
+                return res.status(200).json({
+                    success: true,
+                    arrayFind
+                })
+            } else {
+                const arrayFind = await Gusts.find({})
+
+                return res.status(200).json({
+                    success: true,
+                    arrayFind
+                })
+            }
+
+
         } catch (error) {
             res.json({
                 success: false,

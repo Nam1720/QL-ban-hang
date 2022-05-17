@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { Modal, Form, Input, Button, Space } from 'antd';
 import { SaveOutlined, StopOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
-import { setModalAdd, updateListGuest } from '../_store/guestSlice';
+import { setModalAdd, addListGust } from '../_store/guestSlice';
 import { addGuest } from '../_api/index';
+import { openNotificationWithIcon } from '../../../helpers/funcs'
 
-const GuestModal = () => {
+const GuestModalAdd = () => {
   const modalAdd = useSelector(state => state.guest.modalAdd)
   const dispatch = useDispatch()
 
@@ -15,21 +16,21 @@ const GuestModal = () => {
 
   const handleSubmit = () => {
     if (nameGust != '') {
-      const data = {
-        tokenAdmin: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjdjNmVkZjY0NTExOTZmMDBmN2YzNGEiLCJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNjUyNDc2OTcwfQ.E6yDd2dk4u1hntER5xus6IPqLPxCdihw2HbKGaZAvLw',
-        nameGust,
-        phone,
-        address
-      }
-      addGuest(data)
+      addGuest(nameGust, phone, address)
         .then(res => {
           if (res.data.success) {
             dispatch(setModalAdd(false))
-            dispatch(updateListGuest(res.data.newGust))
+            dispatch(addListGust(res.data.newGust))
             setNameGust('')
             setPhone('')
             setAddress('')
+            openNotificationWithIcon('success', res.data.message)
+          } else {
+            openNotificationWithIcon('error', res.data.message)
           }
+        })
+        .catch(err => {
+          openNotificationWithIcon('error', err)
         })
     }
   };
@@ -75,7 +76,7 @@ const GuestModal = () => {
           <Space size="middle" className='d-flex' style={{ flexDirection: 'row-reverse' }}>
             <Button onClick={() => handleCancel()} className='font-weight-bold' style={{ padding: '0 32px' }} icon={<StopOutlined />} >Hủy</Button>
             <Button onClick={() => handleSubmit()} className='font-weight-bold' style={{ background: '#4bac4d', border: 'none', padding: '0 32px' }} htmlType="submit" type="primary" icon={<SaveOutlined />}>
-            Lưu
+            Tạo
             </Button>
           </Space>
         </Form>
@@ -84,4 +85,4 @@ const GuestModal = () => {
   );
 };
 
-export default GuestModal;
+export default GuestModalAdd;

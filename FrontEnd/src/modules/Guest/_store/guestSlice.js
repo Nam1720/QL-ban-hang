@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const guestSlice = createSlice({
   name: 'guest',
-  initialState: { modalAdd: false , modalUpdate : false, listGuest: [] },
+  initialState: { modalAdd: false , modalUpdate: false, modalRemove: { view: false, codeGust: '', nameGust: '' }, fillterUpdate: { codeGust: '', nameGust: '', phoneGust: '', addressGust: '' }, listGuest: [] },
   reducers: {
     setModalAdd(state, action) {
       state.modalAdd = action.payload
@@ -13,12 +13,18 @@ const guestSlice = createSlice({
     setListGuest(state, action) {
       state.listGuest = action.payload
     },
-    updateListGuest(state, action) {
+    addListGust(state, action) {
       state.listGuest = [...state.listGuest, action.payload]
+    },
+    setFillUpdate(state, action) {
+      state.fillterUpdate = { ...action.payload }
+    },
+    setModalRemove(state, action) {
+      state.modalRemove = { ...action.payload }
     }
   }
 })
 
-export const { setModalAdd , setModalUpdate, setListGuest, updateListGuest } = guestSlice.actions
+export const { setModalAdd , setModalUpdate, setListGuest, addListGust, setFillUpdate, setModalRemove } = guestSlice.actions
 
 export default guestSlice.reducer

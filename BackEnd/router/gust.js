@@ -15,4 +15,7 @@ router.post('/update', checkTokenAll, gustController.update)
 // POST /api/gust/remove
 router.post('/remove', checkTokenAdmin, gustController.remove)
 
+// POST /api/gust/find
+router.post('/find', checkTokenAll, gustController.find)
+
 module.exports = router

@@ -24,14 +24,14 @@ const Header = () => {
   const dispatch = useDispatch();
   const changeLanguage = (key) => {
     switch (key) {
-      case 'vi':
-        setLanguage('Vietnamese');
-        i18n.changeLanguage(key);
-        break;
-      case 'en':
-        setLanguage('English');
-        i18n.changeLanguage(key);
-        break;
+    case 'vi':
+      setLanguage('Vietnamese');
+      i18n.changeLanguage(key);
+      break;
+    case 'en':
+      setLanguage('English');
+      i18n.changeLanguage(key);
+      break;
     }
   };
   const menu = (
@@ -89,8 +89,8 @@ const Header = () => {
           <div className="cusor-pointer">
             <i className="icon-user3 pr-1"></i>
             <Text strong>
-              {authInfo && !isEmpty(authInfo.userName)
-                ? authInfo.userName
+              {authInfo && !isEmpty(authInfo)
+                ? authInfo
                 : 'Update'}
             </Text>
           </div>

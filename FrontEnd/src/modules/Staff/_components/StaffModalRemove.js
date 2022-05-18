@@ -2,23 +2,21 @@ import React from 'react';
 import { Modal, Button, Space } from 'antd';
 import { SaveOutlined, StopOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
-import { setListGuest, setModalRemove } from '../_store/guestSlice';
-import { removeGuest } from '../_api/index';
-import { openNotificationWithIcon } from '../../../helpers/funcs'
+import { setModalRemove, setListStaff } from '../_store/staffSlice';
+import { removeStaff } from '../_api';
+import { openNotificationWithIcon } from '../../../helpers/funcs';
 
-const GuestModalRemove = () => {
-  const modalRemove = useSelector(state => state.guest.modalRemove)
-  const { view, codeGust, nameGust } = modalRemove
+const StaffModalRemove = () => {
   const dispatch = useDispatch()
-
-
+  const modalRemove = useSelector(state => state.staff.modalRemove)
+  const { view, username, nameStaff } = modalRemove
 
   const handleSubmit = () => {
-    removeGuest(codeGust)
+    removeStaff(username)
       .then(res => {
         if (res.data.success) {
           openNotificationWithIcon('success', res.data.message)
-          dispatch(setListGuest(res.data.listGust))
+          dispatch(setListStaff(res.data.listStaff))
           handleCancel()
         } else {
           openNotificationWithIcon('error', res.data.message)
@@ -33,8 +31,8 @@ const GuestModalRemove = () => {
 
   return (
     <>
-      <Modal width={800} footer={null} title="Xóa khách hàng" visible={view} onCancel={handleCancel}>
-        <h3>Bạn có chắc là xóa khách hàng <span style={{ color: 'red' }}>{nameGust}</span> này không ?</h3>
+      <Modal width={800} footer={null} title="Xóa nhân viên" visible={view} onCancel={handleCancel}>
+        <h3>Bạn có chắc là xóa nhân viên <span style={{ color: 'red' }}>{nameStaff}</span> này không ?</h3>
         <Space size="middle" className='d-flex' style={{ flexDirection: 'row-reverse' }}>
           <Button onClick={() => handleCancel()} className='font-weight-bold' style={{ padding: '0 32px' }} icon={<StopOutlined />} >Hủy</Button>
           <Button onClick={() => handleSubmit()} className='font-weight-bold' style={{ background: '#ff4d4f', border: 'none', padding: '0 32px' }} htmlType="submit" type="primary" icon={<SaveOutlined />}>
@@ -46,4 +44,4 @@ const GuestModalRemove = () => {
   );
 };
 
-export default GuestModalRemove;
+export default StaffModalRemove;

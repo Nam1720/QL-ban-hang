@@ -5,7 +5,7 @@ const User = require('../../models/User')
 class userController {
     // [POST] /api/user/register
     async register(req, res) {
-        const { username, password, name } = req.body
+        const { username, password, nameStaff, phoneStaff } = req.body
 
         if (!username || !password) {
             return res.status(200).json({
@@ -25,24 +25,23 @@ class userController {
             }
 
             const hashedPassword = await argon2.hash(password)
+            const listStaff = await User.find({})
             const newUser = new User({
+                codeStaff: `NV${listStaff.length + 1}`,
                 username,
                 password: hashedPassword,
-                name
+                nameStaff,
+                phoneStaff: phoneStaff != '' ? phoneStaff : ''
             })
             await newUser.save()
 
-            const accessToken = jwt.sign({ userId: newUser._id, username, name: user.name }, 'userngominhthuan')
             res.json({
                 success: true,
                 message: 'Đã tạo thành công',
-                accessToken,
-                username,
-                userId: newUser._id,
-                name
+                newUser
             })
         } catch (error) {
-
+            console.log(error)
         }
     }
 
@@ -74,7 +73,7 @@ class userController {
                 })
             }
 
-            const accessToken = jwt.sign({ userId: user._id, username, name: user.name }, 'userngominhthuan')
+            const accessToken = jwt.sign({ userId: user._id, username, nameStaff: user.nameStaff }, 'userngominhthuan')
 
             res.json({
                 success: true,
@@ -82,7 +81,7 @@ class userController {
                 accessToken,
                 userId: user._id,
                 username: username,
-                name: user.name
+                nameStaff: user.nameStaff
             })
         } catch (error) {
 
@@ -92,12 +91,12 @@ class userController {
     // [POST] /api/user/getList
     async getList(req, res) {
         try {
-            const user = await User.findOne({})
+            const userList = await User.find({})
 
             res.json({
                 success: true,
                 message: 'Get list user thành công!',
-                userList: user
+                userList
             })
         } catch (error) {
             res.json({
@@ -118,10 +117,12 @@ class userController {
 
         try {
             await User.deleteOne({ username: username })
+            const listStaff = await User.find({})
 
             return res.status(200).json({
                 success: true,
-                message: `Xóa ${username} Thành Công`
+                message: `Xóa ${username} Thành Công`,
+                listStaff
             })
         } catch (error) {
             return res.status(200).json({

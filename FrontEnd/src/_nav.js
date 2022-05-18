@@ -32,6 +32,12 @@ export default {
       children: []
     },
     {
+      name: 'Hóa Đơn',
+      url: '/hoa-don',
+      icon: 'icon-home',
+      children: []
+    },
+    {
       name: 'Nhân Viên',
       url: '/nhan-vien',
       icon: 'icon-home',

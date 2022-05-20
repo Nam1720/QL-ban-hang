@@ -27,12 +27,12 @@ const Filter = () => {
           onSearch={onSearch}
           enterButton
         />
-        <Button type="primary" icon={<MoreOutlined />}>
+        <Button type="primary" className="green-done " icon={<MoreOutlined />}>
           Thao tác <CaretDownOutlined />
         </Button>
 
         <Button type="primary" icon={<PlusOutlined />}>
-          Thêm mới <CaretDownOutlined />
+          Thêm mới
         </Button>
 
         <Button type="primary" icon={<ExportOutlined />}>

@@ -12,6 +12,9 @@ router.post('/login', userController.login)
 // POST /api/user/getList
 router.post('/getList', checkTokenAdmin, userController.getList)
 
+// POST /api/user/update
+router.post('/update', checkTokenAdmin, userController.updateUser)
+
 // POST /api/user/remove
 router.post('/remove', checkTokenAdmin, userController.removeUser)
 

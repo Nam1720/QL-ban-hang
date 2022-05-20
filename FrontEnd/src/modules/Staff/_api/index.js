@@ -15,7 +15,7 @@ export const addStaff = (data) => {
 }
 
 export const updateStaff = (data) => {
-  return axios.post('http://localhost:3000/api/gust/update', {
+  return axios.post('http://localhost:3000/api/user/update', {
     tokenAdmin: cookie.get('ustkrohtodev'),
     ...data
   })
@@ -29,7 +29,7 @@ export const removeStaff = (username) => {
 }
 
 export const findStaff = (find) => {
-  return axios.post('http://localhost:3000/api/gust/find', {
+  return axios.post('http://localhost:3000/api/user/find', {
     tokenAdmin: cookie.get('ustkrohtodev'),
     find
   })

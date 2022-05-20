@@ -1,4 +1,5 @@
 const Gusts = require('../../models/Gusts')
+const { arrayNoDuplicates } = require('../../helpers/arrayNoDuplicates')
 
 class gustController {
     // [POST] /api/gust/create
@@ -121,7 +122,7 @@ class gustController {
 
                 return res.status(200).json({
                     success: true,
-                    arrayFind
+                    arrayFind: arrayNoDuplicates(arrayFind)
                 })
             } else {
                 const arrayFind = await Gusts.find({})

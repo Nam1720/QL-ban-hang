@@ -113,6 +113,39 @@ class invoiceController {
             })
         }
     }
+
+    // [POST] /api/invoice/findDate
+    async findDate(req, res) {
+        const { find } = req.body
+
+        try {
+            if (find[0] != '' && find[1] != '') {
+                const arrayFind = await Invoices.find({ createdAt: { $gte: new Date(find[0]), $lt: new Date(`${find[1]}T23:59:59.000Z`) } })
+
+                return res.status(200).json({
+                    success: true,
+                    message: `Tìm thành công!`,
+                    arrayFind
+                })
+            } else {
+                const arrayFind = await Invoices.find({})
+
+                return res.status(200).json({
+                    success: true,
+                    message: `Tìm thành công!`,
+                    arrayFind
+                })
+            }
+
+        } catch (error) {
+            console.log(error)
+            return res.status(200).json({
+                success: false,
+                message: 'Có lỗi xảy ra, xin vui lòng thử lại!',
+                error
+            })
+        }
+    }
 }
 
 module.exports = new invoiceController;

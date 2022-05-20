@@ -34,3 +34,10 @@ export const findInvoice = (find) => {
     find
   })
 }
+
+export const findInvoiceDate = (find) => {
+  return axios.post('http://localhost:3000/api/invoice/findDate', {
+    tokenAdmin: cookie.get('ustkrohtodev'),
+    find
+  })
+}

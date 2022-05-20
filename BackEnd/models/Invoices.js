@@ -43,6 +43,8 @@ const InvoiceSchema = new Schema({
         type: String,
         default: new Date().toLocaleString()
     }
+}, {
+    timestamps: true
 })
 
 module.exports = mongoose.model('invoices', InvoiceSchema)

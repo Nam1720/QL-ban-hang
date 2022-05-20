@@ -1,7 +1,6 @@
 import { notification } from 'antd';
 import { APP_CONFIG } from 'utils/constants';
 
-
 export const getCookie = (cname) => {
   var name = cname + '';
   var decodedCookie = decodeURIComponent(document.cookie);
@@ -23,7 +22,7 @@ export const getCookie = (cname) => {
  **/
 export const saveCookie = (name, value, exdays) => {
   let date = new Date();
-  date.setTime(date.getTime() + (exdays * 24 * 60 * 60 * 1000));
+  date.setTime(date.getTime() + exdays * 24 * 60 * 60 * 1000);
   document.cookie = `${name}=${value}; expires=${date.toUTCString()}`;
 };
 
@@ -60,6 +59,15 @@ export const formatNumber = (value) => {
   }
   return `${prefix}${result}${list[1] ? `.${list[1]}` : ''}`;
 };
+
+export const formatPrice = (value) => {
+  return `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+};
+
+export const formatPriceVND = (value) =>
+  new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(
+    value
+  );
 
 export const validationPhone = (rule, value, callback) => {
   if (/(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\b/.test(value)) {
@@ -103,12 +111,12 @@ export const getBase64 = (img, callback) => {
   const reader = new FileReader();
   reader.addEventListener('load', () => callback(reader.result));
   reader.readAsDataURL(img);
-}
+};
 
 export const allowedUserChecker = (userRoles, allowedRoles) => {
-  console.log(userRoles,'userRoles');
-  console.log(allowedRoles,'allowedRoles');
-}
+  console.log(userRoles, 'userRoles');
+  console.log(allowedRoles, 'allowedRoles');
+};
 
 export const openNotificationWithIcon = (type, message) => {
   notification[type]({
@@ -126,11 +134,11 @@ export const beforeUpload = (file) => {
     openNotificationWithIcon('error', 'Image must smaller than 2MB!');
   }
   return isJpgOrPng && isLt2M;
-}
+};
 
 export const getUrlImage = (url = '') => {
-  return  url && url !== '' ?  APP_CONFIG.appUrl + url : null
-}
+  return url && url !== '' ? APP_CONFIG.appUrl + url : null;
+};
 
 export const getExpirationDate = (jwtToken) => {
   if (!jwtToken) {
@@ -140,5 +148,5 @@ export const getExpirationDate = (jwtToken) => {
   const jwt = JSON.parse(atob(jwtToken.split('.')[1]));
 
   // multiply by 1000 to convert seconds into milliseconds
-  return jwt && jwt.exp && jwt.exp * 1000 || null;
+  return (jwt && jwt.exp && jwt.exp * 1000) || null;
 };

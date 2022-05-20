@@ -38,7 +38,7 @@ const columns = [
 ];
 
 const data = [];
-for (let i = 0; i < 20; i++) {
+for (let i = 0; i < 5; i++) {
   data.push({
     stt: i + 1,
     key: i,

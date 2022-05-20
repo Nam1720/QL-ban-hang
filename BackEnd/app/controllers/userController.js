@@ -1,6 +1,7 @@
 const argon2 = require('argon2')
 const jwt = require('jsonwebtoken')
 const User = require('../../models/User')
+const { arrayNoDuplicates } = require('../../helpers/arrayNoDuplicates')
 
 class userController {
     // [POST] /api/user/register
@@ -108,7 +109,46 @@ class userController {
     }
 
     async updateUser(req, res) {
+        const { codeStaff, nameStaff, phoneStaff, password } = req.body
 
+        try {
+            if (password != '') {
+                const hashedPassword = await argon2.hash(password)
+                await User.updateOne({ codeStaff }, {
+                    nameStaff,
+                    phoneStaff,
+                    password: hashedPassword
+                })
+
+                const listStaff = await User.find({})
+
+                return res.status(200).json({
+                    success: true,
+                    message: `Cập nhật ${codeStaff} Thành Công`,
+                    listStaff
+                })
+            } else {
+                await User.updateOne({ codeStaff }, {
+                    nameStaff,
+                    phoneStaff,
+                })
+
+                const listStaff = await User.find({})
+
+                return res.status(200).json({
+                    success: true,
+                    message: `Cập nhật ${codeStaff} Thành Công`,
+                    listStaff
+                })
+            }
+        } catch (error) {
+            console.log(error)
+            return res.status(200).json({
+                success: false,
+                message: 'Có lỗi xảy ra, xin vui lòng thử lại!',
+                error
+            })
+        }
     }
 
     // [POST] /api/user/remove
@@ -135,17 +175,38 @@ class userController {
 
     // [POST] /api/user/find
     async findUser(req, res) {
-        const { findUsername } = req.body
-
+        const { find } = req.body
+        
         try {
-            const listFind = await User.find({ username: { $regex: findUsername, $options: 'i' } })
+            if (find != '') {
+                const arrayFind = new Array
+                const listCode = await User.find({ codeStaff: { $regex: find, $options: 'i' } })
+                const listName = await User.find({ nameStaff: { $regex: find, $options: 'i' } })
+                const listUsername = await User.find({ username: { $regex: find, $options: 'i' } })
+                const listPhone = await User.find({ phoneStaff: { $regex: find, $options: 'i' } })
 
-            return res.status(200).json({
-                success: true,
-                message: `Tìm thành công!`,
-                listFind
-            })
+                arrayFind.push(...listCode)
+                arrayFind.push(...listName)
+                arrayFind.push(...listUsername)
+                arrayFind.push(...listPhone)
+
+                return res.status(200).json({
+                    success: true,
+                    message: `Tìm thành công!`,
+                    arrayFind: arrayNoDuplicates(arrayFind)
+                })
+            } else {
+                const arrayFind = await User.find({})
+
+                return res.status(200).json({
+                    success: true,
+                    message: `Tìm thành công!`,
+                    arrayFind
+                })
+            }
+
         } catch (error) {
+            console.log(error)
             return res.status(200).json({
                 success: false,
                 message: 'Có lỗi xảy ra, xin vui lòng thử lại!',

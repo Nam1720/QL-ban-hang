@@ -4,8 +4,7 @@ const Invoices = require('../../models/Invoices')
 class invoiceController {
     // [POST] /api/invoice/create
     async create(req, res) {
-        const { nameGuest, addressGuest, phoneGuest, paymentType, productsBuying } = req.body
-
+        const { nameGuest, addressGuest, phoneGuest, paymentType, productsBuying, totalMoney } = req.body
         try {
             const Invoice = await Invoices.find({})
 
@@ -16,7 +15,8 @@ class invoiceController {
                 addressGuest: addressGuest != '' ? addressGuest : '',
                 phoneGuest: phoneGuest != '' ? phoneGuest : '',
                 paymentType,
-                productsBuying
+                productsBuying,
+                totalMoney
             })
             await newInvoice.save()
 
@@ -75,14 +75,40 @@ class invoiceController {
         try {
             await Invoices.deleteOne({ codeInvoice })
 
+            const InoviceList = await Invoices.find({})
+
             return res.status(200).json({
                 success: true,
-                message: `Xóa hóa đơn ${codeInvoice} thành công!`
+                message: `Xóa hóa đơn ${codeInvoice} thành công!`,
+                InoviceList
             })
         } catch (error) {
             res.json({
                 success: false,
                 message: 'Đã lỗi xảy ra, vui lòng thử lại!',
+                error
+            })
+        }
+    }
+
+    // [POST] /api/invoice/find
+    async find(req, res) {
+        const { find } = req.body
+
+        try {
+            const listCode = await Invoices.find({ codeInvoice: { $regex: find, $options: 'i' } })
+
+            return res.status(200).json({
+                success: true,
+                message: `Tìm thành công!`,
+                arrayFind: listCode
+            })
+
+        } catch (error) {
+            console.log(error)
+            return res.status(200).json({
+                success: false,
+                message: 'Có lỗi xảy ra, xin vui lòng thử lại!',
                 error
             })
         }

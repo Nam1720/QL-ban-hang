@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Table, Space, Button } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import { getListGuest } from '../_api/index';
@@ -10,6 +10,8 @@ const GuestTable = () => {
   const listGuest = useSelector(state => state.guest.listGuest)
   const modalUpdate = useSelector(state => state.guest.modalUpdate)
   const dispatch = useDispatch()
+
+  const [loading, setLoading] = useState(true)
 
   const handleClickUpdate = (codeGust, nameGust, phoneGust, addressGust) => {
     dispatch(setFillUpdate({ ...modalUpdate, codeGust, nameGust, phoneGust, addressGust }))
@@ -26,11 +28,16 @@ const GuestTable = () => {
       .then(res => {
         if (res.data.success) {
           dispatch(setListGuest(res.data.GustList))
+          setLoading(false)
         } else {
           openNotificationWithIcon('error', res.data.message)
+          setLoading(false)
         }
       })
-      .catch(err => openNotificationWithIcon('error', err))
+      .catch(err => {
+        openNotificationWithIcon('error', err)
+        setLoading(false)
+      })
   }, [])
 
   const columns = [
@@ -80,7 +87,7 @@ const GuestTable = () => {
 
   return (
     <div style={{ marginTop: '30px' }}>
-      <Table columns={columns} dataSource={listGuest} />
+      <Table columns={columns} dataSource={listGuest} loading={loading} />
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Table, Space, Button } from 'antd';
 import { getListStaff } from '../_api';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,6 +8,7 @@ import { openNotificationWithIcon } from '../../../helpers/funcs';
 
 const StaffTable = () => {
   const dispatch = useDispatch()
+  const [loading, setLoading] = useState(true)
 
   const listStaff = useSelector(state => state.staff.listStaff)
   // const modalUpdate = useSelector(state => state.staff.modalUpdate)
@@ -17,15 +18,20 @@ const StaffTable = () => {
       .then(res => {
         if (res.data.success) {
           dispatch(setListStaff(res.data.userList))
+          setLoading(false)
         } else {
           openNotificationWithIcon('error', res.data.message)
+          setLoading(false)
         }
       })
-      .catch(() => openNotificationWithIcon('error', 'Có lỗi xảy ra, xin vui lòng thử lại!'))
+      .catch(() => {
+        openNotificationWithIcon('error', 'Có lỗi xảy ra, xin vui lòng thử lại!')
+        setLoading(false)
+      })
   }, [])
 
-  const handleClickUpdate = (codeStaff, nameStaff, phoneStaff, username, password) => {
-    dispatch(setModalUpdate({ view: true, codeStaff, nameStaff, phoneStaff, username, password }))
+  const handleClickUpdate = (codeStaff, nameStaff, phoneStaff, username) => {
+    dispatch(setModalUpdate({ view: true, codeStaff, nameStaff, phoneStaff, username }))
   }
 
   const handleClickRemove = (codeStaff, nameStaff, username) => {
@@ -65,7 +71,7 @@ const StaffTable = () => {
       key: 'action',
       render: (text, record) => (
         <Space size="middle">
-          <Button onClick={() => handleClickUpdate(record.codeStaff, record.nameStaff, record.phoneStaff, record.username, record.password)} type="primary" shape="round" size='small' style={{ background: '#4bac4d', border: 'none' }}>Cập nhật</Button>
+          <Button onClick={() => handleClickUpdate(record.codeStaff, record.nameStaff, record.phoneStaff, record.username)} type="primary" shape="round" size='small' style={{ background: '#4bac4d', border: 'none' }}>Cập nhật</Button>
           <Button onClick={() => handleClickRemove(record.codeStaff, record.nameStaff, record.username)} type="primary" shape="round" size='small' danger>Xóa</Button>
         </Space>
       ),
@@ -74,7 +80,7 @@ const StaffTable = () => {
 
   return (
     <div style={{ marginTop: '30px' }}>
-      <Table columns={columns} dataSource={listStaff} />
+      <Table columns={columns} dataSource={listStaff} loading={loading} />
     </div>
   );
 };

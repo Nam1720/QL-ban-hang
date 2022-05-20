@@ -34,6 +34,11 @@ const InvoiceSchema = new Schema({
         required: true
     },
 
+    totalMoney: {
+        type: String,
+        required: true
+    },
+
     createAt: {
         type: String,
         default: new Date().toLocaleString()

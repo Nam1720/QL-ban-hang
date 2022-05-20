@@ -5,12 +5,13 @@ import StaffTable from '../_components/StaffTable';
 import StaffModalAdd from '../_components/StaffModalAdd';
 import StaffModalUpdate from '../_components/StaffModalUpdate';
 import StaffModalRemove from '../_components/StaffModalRemove';
-
+import { Divider } from 'antd';
 
 const DanhMuc = () => {
   return (
     <div>
       <StaffFillter />
+      <Divider />
       <StaffTable />
       <StaffModalAdd />
       <StaffModalUpdate />

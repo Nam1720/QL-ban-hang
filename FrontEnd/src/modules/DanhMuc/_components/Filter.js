@@ -1,20 +1,23 @@
 /* eslint-disable react/jsx-no-undef */
 import React from 'react';
-import { Input, Space } from 'antd';
+import { Button, Input, Space } from 'antd';
 import {
   PlusOutlined,
   CaretDownOutlined,
   ExportOutlined,
   MoreOutlined,
 } from '@ant-design/icons';
-
-import { Button } from 'antd';
-
+import { useDispatch } from 'react-redux';
+import { setModalAdd } from '../_store/categorySlice';
 const { Search } = Input;
 
 const onSearch = (value) => console.log(value);
-
 const Filter = () => {
+  const dispatch = useDispatch();
+  const handleClickAdd = () => {
+    dispatch(setModalAdd(true));
+  };
+
   return (
     <div>
       <Space
@@ -27,15 +30,30 @@ const Filter = () => {
           onSearch={onSearch}
           enterButton
         />
-        <Button type="primary" className="green-done " icon={<MoreOutlined />}>
+        <Button
+          type="primary"
+          className="green-done "
+          icon={<MoreOutlined />}
+          style={{ borderRadius: '8px' }}
+        >
           Thao tác <CaretDownOutlined />
         </Button>
 
-        <Button type="primary" icon={<PlusOutlined />}>
+        <Button
+          onClick={() => handleClickAdd()}
+          className="font-weight-bold "
+          type="primary"
+          icon={<PlusOutlined />}
+          style={{ borderRadius: '8px' }}
+        >
           Thêm mới
         </Button>
 
-        <Button type="primary" icon={<ExportOutlined />}>
+        <Button
+          type="primary"
+          icon={<ExportOutlined />}
+          style={{ borderRadius: '8px' }}
+        >
           Xuất file
         </Button>
       </Space>

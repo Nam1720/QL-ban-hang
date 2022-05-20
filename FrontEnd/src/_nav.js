@@ -3,45 +3,45 @@ export default {
     {
       name: 'Tổng quan',
       url: '/',
-      icon: 'icon-home',
-      children: []
+      icon: 'home',
+      children: [],
     },
     {
       name: 'Hàng Hóa',
       url: '/hang-hoa',
-      icon: 'icon-home',
+      icon: 'home',
       children: [
         {
           name: 'Danh Mục',
           url: '/danh-muc',
           icon: 'icon-home',
-          children: []
+          children: [],
         },
         {
           name: 'Thiết lập giá',
           url: '/hang-hoa/thiet-lap-gia',
           icon: 'icon-home',
-          children: []
+          children: [],
         },
-      ]
+      ],
     },
     {
       name: 'Khách hàng',
       url: '/khach-hang',
       icon: 'icon-home',
-      children: []
+      children: [],
     },
     {
       name: 'Hóa Đơn',
       url: '/hoa-don',
       icon: 'icon-home',
-      children: []
+      children: [],
     },
     {
       name: 'Nhân Viên',
       url: '/nhan-vien',
       icon: 'icon-home',
-      children: []
+      children: [],
     },
   ],
 };

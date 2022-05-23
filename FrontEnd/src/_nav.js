@@ -26,14 +26,14 @@ export default {
       ],
     },
     {
-      name: 'Khách hàng',
-      url: '/khach-hang',
+      name: 'Hóa Đơn',
+      url: '/hoa-don',
       icon: 'icon-home',
       children: [],
     },
     {
-      name: 'Hóa Đơn',
-      url: '/hoa-don',
+      name: 'Khách hàng',
+      url: '/khach-hang',
       icon: 'icon-home',
       children: [],
     },

@@ -46,72 +46,74 @@ const DashboardChart = () => {
 
 
   return (
-    <Bar
-      data={{
-        labels: [
-          'T1',
-          'T2',
-          'T3',
-          'T4',
-          'T5',
-          'T6',
-          'T7',
-          'T8',
-          'T9',
-          'T10',
-          'T11',
-          'T12',
-        ],
-        datasets: [
-          {
-            label: 'Tổng doanh thu (VND)',
-            backgroundColor: [
-              'rgba(255, 205, 86, 0.5)',
-              'rgba(255, 205, 86, 0.5)',
-              'rgba(255, 205, 86, 0.5)',
-              'rgba(255, 205, 86, 0.5)',
-              'rgba(255, 205, 86, 0.5)',
-              'rgba(255, 205, 86, 0.5)',
-              'rgba(255, 205, 86, 0.5)',
-              'rgba(255, 205, 86, 0.5)',
-              'rgba(255, 205, 86, 0.5)',
-              'rgba(255, 205, 86, 0.5)',
-              'rgba(255, 205, 86, 0.5)',
-              'rgba(255, 205, 86, 0.5)',
-            ],
-            data: [t1[0], t2[0], t3[0], t4[0], t5[0], t6[0], t7[0], t8[0], t9[0], t10[0], t11[0], t12[0]]
-          },
-          {
-            label: 'Tổng lợi nhuận (VND)',
-            backgroundColor: [
-              'rgba(75, 192, 192, 0.5)',
-              'rgba(75, 192, 192, 0.5)',
-              'rgba(75, 192, 192, 0.5)',
-              'rgba(75, 192, 192, 0.5)',
-              'rgba(75, 192, 192, 0.5)',
-              'rgba(75, 192, 192, 0.5)',
-              'rgba(75, 192, 192, 0.5)',
-              'rgba(75, 192, 192, 0.5)',
-              'rgba(75, 192, 192, 0.5)',
-              'rgba(75, 192, 192, 0.5)',
-              'rgba(75, 192, 192, 0.5)',
-              'rgba(75, 192, 192, 0.5)',
-            ],
-            data: [t1[1], t2[1], t3[1], t4[1], t5[1], t6[1], t7[1], t8[1], t9[1], t10[1], t11[1], t12[1]]
-          },
-        ]
-      }}
-      options={{
-        legend: { display: false },
-        // maintainAspectRatio: false,
-        title: {
-          display: true,
-          text: 'Tổng doanh thu (VND)'
-        }
-      }}
+    <>
+      <Bar
+        data={{
+          labels: [
+            'THÁNG 1',
+            'THÁNG 2',
+            'THÁNG 3',
+            'THÁNG 4',
+            'THÁNG 5',
+            'THÁNG 6',
+            'THÁNG 7',
+            'THÁNG 8',
+            'THÁNG 9',
+            'THÁNG 10',
+            'THÁNG 11',
+            'THÁNG 12',
+          ],
+          datasets: [
+            {
+              label: 'Tổng doanh thu (VND)',
+              backgroundColor: [
+                'rgba(255, 205, 86, 0.5)',
+                'rgba(255, 205, 86, 0.5)',
+                'rgba(255, 205, 86, 0.5)',
+                'rgba(255, 205, 86, 0.5)',
+                'rgba(255, 205, 86, 0.5)',
+                'rgba(255, 205, 86, 0.5)',
+                'rgba(255, 205, 86, 0.5)',
+                'rgba(255, 205, 86, 0.5)',
+                'rgba(255, 205, 86, 0.5)',
+                'rgba(255, 205, 86, 0.5)',
+                'rgba(255, 205, 86, 0.5)',
+                'rgba(255, 205, 86, 0.5)',
+              ],
+              data: [t1[0], t2[0], t3[0], t4[0], t5[0], t6[0], t7[0], t8[0], t9[0], t10[0], t11[0], t12[0]]
+            },
+            {
+              label: 'Tổng lợi nhuận (VND)',
+              backgroundColor: [
+                'rgba(75, 192, 192, 0.5)',
+                'rgba(75, 192, 192, 0.5)',
+                'rgba(75, 192, 192, 0.5)',
+                'rgba(75, 192, 192, 0.5)',
+                'rgba(75, 192, 192, 0.5)',
+                'rgba(75, 192, 192, 0.5)',
+                'rgba(75, 192, 192, 0.5)',
+                'rgba(75, 192, 192, 0.5)',
+                'rgba(75, 192, 192, 0.5)',
+                'rgba(75, 192, 192, 0.5)',
+                'rgba(75, 192, 192, 0.5)',
+                'rgba(75, 192, 192, 0.5)',
+              ],
+              data: [t1[1], t2[1], t3[1], t4[1], t5[1], t6[1], t7[1], t8[1], t9[1], t10[1], t11[1], t12[1]]
+            },
+          ]
+        }}
+        options={{
+          legend: { display: false },
+          // maintainAspectRatio: false,
+          title: {
+            display: true,
+            text: 'Tổng doanh thu (VND)'
+          }
+        }}
 
-      height={100}
-    />
+        height={100}
+      />
+    </>
   )
 }
 

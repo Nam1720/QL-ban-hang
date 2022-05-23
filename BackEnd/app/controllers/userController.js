@@ -2,6 +2,7 @@ const argon2 = require('argon2')
 const jwt = require('jsonwebtoken')
 const User = require('../../models/User')
 const { arrayNoDuplicates } = require('../../helpers/arrayNoDuplicates')
+const { handleCount } = require('../../helpers/handleCount')
 
 class userController {
     // [POST] /api/user/register
@@ -27,8 +28,9 @@ class userController {
 
             const hashedPassword = await argon2.hash(password)
             const listStaff = await User.find({})
+
             const newUser = new User({
-                codeStaff: `NV${listStaff.length + 1}`,
+                codeStaff: `NV${handleCount('NV', 'codeStaff', listStaff)}`,
                 username,
                 password: hashedPassword,
                 nameStaff,

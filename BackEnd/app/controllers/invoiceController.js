@@ -1,5 +1,6 @@
 const Goods = require('../../models/Goods')
 const Invoices = require('../../models/Invoices')
+const { handleCount } = require('../../helpers/handleCount')
 
 class invoiceController {
     // [POST] /api/invoice/create
@@ -9,7 +10,7 @@ class invoiceController {
             const Invoice = await Invoices.find({})
 
             const newInvoice = new Invoices({
-                codeInvoice: `HD${Invoice.length + 1}`,
+                codeInvoice: `HD${handleCount('HD', 'codeInvoice', Invoice)}`,
                 nameSeller: req.name,
                 nameGuest: nameGuest != '' ? nameGuest : 'Khách lẻ',
                 addressGuest: addressGuest != '' ? addressGuest : '',

@@ -49,7 +49,7 @@ const InvoiceFillter = () => {
 
   return (
     <div className='d-flex align-items-center justify-content-between' style={{ width: '50%' }}>
-      <Input onChange={e => handleChangeInput(e.target.value)} addonAfter={loading ? <LoadingOutlined /> : <SearchOutlined />} placeholder="Theo mã hóa đơn" style={{ width: '70%' }} allowClear />
+      <Input onChange={e => handleChangeInput(e.target.value)} addonAfter={loading ? <LoadingOutlined /> : <SearchOutlined />} placeholder="Theo mã hóa đơn, tên khách hàng" style={{ width: '70%' }} allowClear />
       <DatePicker.RangePicker onChange={(dates, dateStrings) => handleDate(dateStrings) } style={{ width: '70%', marginLeft: '30px' }} />
     </div>
   );

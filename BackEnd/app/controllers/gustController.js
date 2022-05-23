@@ -1,5 +1,6 @@
 const Gusts = require('../../models/Gusts')
 const { arrayNoDuplicates } = require('../../helpers/arrayNoDuplicates')
+const { handleCount } = require('../../helpers/handleCount')
 
 class gustController {
     // [POST] /api/gust/create
@@ -11,7 +12,7 @@ class gustController {
             const Gust = await Gusts.find({})
 
             const newGust = new Gusts({
-                codeGust: `KH${Gust.length + 1}`,
+                codeGust: `KH${handleCount('KH', 'codeGust', Gust)}`,
                 nameSeller: req.name,
                 nameGust: nameGust,
                 phoneGust: phoneGust != '' ? phoneGust : '',

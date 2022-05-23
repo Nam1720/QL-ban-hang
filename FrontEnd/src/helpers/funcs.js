@@ -150,3 +150,18 @@ export const getExpirationDate = (jwtToken) => {
   // multiply by 1000 to convert seconds into milliseconds
   return (jwt && jwt.exp && jwt.exp * 1000) || null;
 };
+
+export const handleTotal = (arrayFind) => {
+  let totalRevenue = 0;
+  let totalOld = 0;
+
+  arrayFind.map(invoice => {
+    totalRevenue = totalRevenue + Number(invoice.totalMoney)
+
+    invoice.productsBuying.map(good => {
+      totalOld = totalOld + ( Number(good.countProduct) * Number(good.priceCapital) )
+    })
+  })
+
+  return [totalRevenue, totalOld]
+}

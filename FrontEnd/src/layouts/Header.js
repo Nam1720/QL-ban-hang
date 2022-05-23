@@ -86,7 +86,7 @@ const Header = () => {
           trigger={['click']}
           onClick={(e) => e.preventDefault()}
         >
-          <div className="cusor-pointer">
+          <div className="cusor-pointer d-flex-center">
             <i className="icon-user3 pr-1"></i>
             <Text strong>
               {authInfo && !isEmpty(authInfo)

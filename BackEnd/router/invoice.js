@@ -18,4 +18,7 @@ router.post('/find', checkTokenAdmin, invoiceController.find)
 // POST /api/invoice/findDate
 router.post('/findDate', checkTokenAdmin, invoiceController.findDate)
 
+// POST /api/invoice/findChart
+router.post('/findChart', checkTokenAdmin, invoiceController.findChart)
+
 module.exports = router

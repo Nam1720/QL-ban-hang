@@ -1,56 +1,52 @@
-<<<<<<< HEAD
-import { SaveOutlined, StopOutlined } from '@ant-design/icons';
-import { Button, Modal, Space } from 'antd';
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { setModalAdd } from '../_store/categorySlice';
-
-const CategoryModalAdd = () => {
-  const dispatch = useDispatch();
-  const modalAdd = useSelector((state) => state.category.modalAdd);
-
-  const handleCancel = () => {
-    dispatch(setModalAdd(false));
-  };
-=======
-/* eslint-disable no-undef */
 import {
+  DeleteOutlined,
   SaveOutlined,
   StopOutlined,
-  DeleteOutlined,
   UploadOutlined,
 } from '@ant-design/icons';
-import { Button, Col, Modal, Row, Space, Upload } from 'antd';
-import React, { useState } from 'react';
+import { Button, Col, Form, Input, Modal, Row, Space, Upload } from 'antd';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Form, Input, InputNumber } from 'antd';
-import { setListCategory, setmodalAdd } from '../_store/categorySlice';
-import { openNotificationWithIcon } from '../../../helpers/funcs';
-import { addProduct } from '../_api';
+import { setmodalUpdate } from '../_store/categorySlice';
 
-const CategoryModalAdd = () => {
+const ModalUpdate = () => {
+  const modalUpdate = useSelector((state) => state.category.modalUpdate);
+  console.log(modalUpdate);
+
   const [previewVisible, setPreviewVisible] = useState(false);
   const [previewImage, setPreviewImage] = useState('');
   const [previewTitle, setPreviewTitle] = useState('');
   const [fileList, setFileList] = useState([]);
   const [form] = Form.useForm();
-  const modalAdd = useSelector((state) => state.category.modalAdd);
-  const modalAdds = useSelector((state) => state.category.listCategory);
 
-  const onFinish = async () => {
-    const values = await form.validateFields();
+  const [inputproductName, setInputproductName] = useState(
+    modalUpdate.productName
+  );
 
-    console.log('form: ', values);
-    addProduct(values).then((res) => {
-      if (res.data.success) {
-        openNotificationWithIcon('success', res.data.message);
+  const dispatch = useDispatch();
+  const handelcancel = () => {
+    dispatch(setmodalUpdate(false));
+  };
 
-        dispatch(setListCategory([...modalAdds, res.data.newGood]));
-        handelcancel();
-      } else {
-        openNotificationWithIcon('error', res.data.message);
-      }
+  useEffect(() => {
+    const { codeProduct, productName, priceCapital, priceSell, inventory } =
+      modalUpdate;
+    form.setFieldsValue({
+      codeProduct: codeProduct,
+      productName: productName,
+      priceCapital: priceCapital,
+      priceSell: priceSell,
+      inventory: inventory,
     });
+  }, [modalUpdate]);
+
+  // dữ liệu form
+  const onFinish = (values) => {
+    console.log(values);
+  };
+
+  const onReset = () => {
+    form.resetFields();
   };
 
   const layout = {
@@ -60,23 +56,21 @@ const CategoryModalAdd = () => {
   const tailLayout = {
     wrapperCol: { offset: 8, span: 16 },
   };
+
   const getBase64 = (file) =>
     new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
-
       reader.onload = () => resolve(reader.result);
-
       reader.onerror = (error) => reject(error);
     });
 
+  // Click show modal ảnh
   const handleCancelImg = () => setPreviewVisible(false);
-
   const handlePreview = async (file) => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
     }
-
     setPreviewImage(file.url || file.preview);
     setPreviewVisible(true);
     setPreviewTitle(
@@ -84,72 +78,25 @@ const CategoryModalAdd = () => {
     );
   };
 
+  // hiển thị dữ liệu modal ảnh
   const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
 
+  //xử lý sự kiện các btn ở modal
   const uploadButton = (
     <div>
       <div className="btn-upload">
-        {' '}
         <UploadOutlined /> Tải ảnh sản phẩm
       </div>
     </div>
   );
 
-  const dispatch = useDispatch();
-  const handelcancel = () => {
-    dispatch(setmodalAdd(false));
-  };
-
-  // const onFinish = (values) => {
-  //   console.log(values);
-  // };
-
-  const onReset = () => {
-    form.resetFields();
-  };
-
->>>>>>> nam
   return (
     <>
       <Modal
         width={800}
-<<<<<<< HEAD
+        visible={modalUpdate.view}
         footer={null}
-        title="Thêm Sản phẩm"
-        visible={modalAdd}
-        onCancel={handleCancel}
-      >
-        <Space
-          size="middle"
-          className="d-flex"
-          style={{ flexDirection: 'row-reverse' }}
-        >
-          <Button
-            onClick={() => handleCancel()}
-            className="font-weight-bold"
-            style={{ padding: '0 32px' }}
-            icon={<StopOutlined />}
-          >
-            Hủy
-          </Button>
-          <Button
-            className="font-weight-bold"
-            style={{
-              background: '#4bac4d',
-              border: 'none',
-              padding: '0 32px',
-            }}
-            htmlType="submit"
-            type="primary"
-            icon={<SaveOutlined />}
-          >
-            Thêm
-          </Button>
-        </Space>
-=======
-        visible={modalAdd.view}
-        footer={null}
-        title="Thêm Sản phẩm"
+        title="Cập nhật Sản phẩm"
         onCancel={handelcancel}
       >
         <Form {...layout} form={form} name="control-hooks" onFinish={onFinish}>
@@ -187,21 +134,24 @@ const CategoryModalAdd = () => {
                 label="Tên sản phẩm"
                 rules={[{ required: true, message: 'Tên sản phẩm bắt buộc' }]}
               >
-                <Input />
+                <Input
+                  value={inputproductName}
+                  onChange={(e) => setInputproductName(e.target.value)}
+                />
               </Form.Item>
               <Form.Item
                 name="priceCapital"
                 label="Giá nhập"
                 rules={[{ required: true, message: 'Giá nhập bắt buộc' }]}
               >
-                <InputNumber />
+                <Input />
               </Form.Item>
               <Form.Item
                 name="priceSell"
                 label="Giá bán"
                 rules={[{ required: true, message: 'Giá bán bắt buộc' }]}
               >
-                <InputNumber />
+                <Input />
               </Form.Item>
               <Form.Item
                 name="inventory"
@@ -210,7 +160,7 @@ const CategoryModalAdd = () => {
                   { required: true, message: 'Số lượng sản phẩm bắt buộc' },
                 ]}
               >
-                <InputNumber />
+                <Input />
               </Form.Item>
             </Col>
           </Row>
@@ -248,15 +198,14 @@ const CategoryModalAdd = () => {
                 type="primary"
                 icon={<SaveOutlined />}
               >
-                Thêm
+                Cập nhật
               </Button>
             </Space>
           </Form.Item>
         </Form>
->>>>>>> nam
       </Modal>
     </>
   );
 };
 
-export default CategoryModalAdd;
+export default ModalUpdate;

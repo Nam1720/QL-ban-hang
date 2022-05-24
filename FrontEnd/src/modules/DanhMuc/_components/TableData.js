@@ -23,6 +23,7 @@ const TableData = () => {
   }, []);
 
   const handleClickUpdate = (
+    codeProduct,
     productName,
     priceCapital,
     priceSell,
@@ -32,6 +33,7 @@ const TableData = () => {
     dispatch(
       setmodalUpdate({
         view: true,
+        codeProduct,
         productName,
         priceCapital,
         priceSell,
@@ -103,6 +105,7 @@ const TableData = () => {
             style={{ background: '#4bac4d', border: 'none' }}
             onClick={() =>
               handleClickUpdate(
+                record.codeProduct,
                 record.productName,
                 record.priceCapital,
                 record.priceSell,
@@ -128,8 +131,9 @@ const TableData = () => {
   ];
 
   const data = useSelector((state) => state.category.listCategory);
+  const loadingTable = useSelector(state => state.category.loadingTable)
 
-  return <Table columns={columns} dataSource={data} />;
+  return <Table loading={loadingTable} columns={columns} dataSource={data} />;
 };
 
 export default TableData;

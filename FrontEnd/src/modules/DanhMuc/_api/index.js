@@ -18,3 +18,18 @@ export const removeProduct = (codeProduct) => {
     tokenAdmin: Cookies.get('ustkrohtodev'),
   });
 };
+
+
+export const updateProduct = (payload) => {
+  return axios.post('http://localhost:3000/api/good/update', {
+    ...payload,
+    tokenAdmin: Cookies.get('ustkrohtodev'),
+  });
+};
+
+export const find = (find) => {
+  return axios.post('http://localhost:3000/api/good/find', {
+    find,
+    tokenAdmin: Cookies.get('ustkrohtodev'),
+  });
+};

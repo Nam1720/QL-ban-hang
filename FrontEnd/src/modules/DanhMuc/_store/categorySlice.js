@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const categorySlice = createSlice({
   name: 'category',
   initialState: {
+    loadingTable: false,
     listCategory: [],
     modalAdd: {
       view: false,
@@ -22,6 +23,9 @@ const categorySlice = createSlice({
     },
   },
   reducers: {
+    setLoadingTable(state, action) {
+      state.loadingTable = action.payload;
+    },
     setListCategory(state, action) {
       state.listCategory = action.payload;
     },
@@ -37,6 +41,6 @@ const categorySlice = createSlice({
   },
 });
 
-export const { setListCategory, setmodalAdd, setmodalUpdate, setmodalRemove } =
+export const { setListCategory, setmodalAdd, setmodalUpdate, setmodalRemove, setLoadingTable } =
   categorySlice.actions;
 export default categorySlice.reducer;

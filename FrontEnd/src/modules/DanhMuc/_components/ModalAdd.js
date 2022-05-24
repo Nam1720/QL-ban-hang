@@ -37,6 +37,7 @@ const CategoryModalAdd = () => {
           priceSell: '',
           inventory: '',
         });
+        setFilePath('http://localhost:3000/defaultProduct.png')
 
         handelcancel();
       } else {

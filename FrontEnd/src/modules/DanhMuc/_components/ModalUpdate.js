@@ -7,8 +7,9 @@ import {
 import { Button, Col, Form, Input, Modal, Row, Space, Upload } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setmodalUpdate } from '../_store/categorySlice';
+import { setmodalUpdate, setListCategory } from '../_store/categorySlice';
 import { openNotificationWithIcon } from '../../../helpers/funcs';
+import { updateProduct } from '../_api';
 
 
 const ModalUpdate = () => {
@@ -20,11 +21,12 @@ const ModalUpdate = () => {
   const [previewTitle, setPreviewTitle] = useState('');
   const [fileList, setFileList] = useState([]);
   const [filePath, setFilePath] = useState()
+  const [codeProductState, setCodeProductState] = useState()
+  const [productNameState, setProductNameState] = useState(modalUpdate.productName)
+  const [priceCapitalState, setPriceCapitalState] = useState(modalUpdate.priceCapital)
+  const [priceSellState, setPriceSellState] = useState(modalUpdate.priceSell);
+  const [inventoryState, setInventoryState] = useState(modalUpdate.inventory)
   const [form] = Form.useForm();
-
-  const [inputproductName, setInputproductName] = useState(
-    modalUpdate.productName
-  );
 
   const dispatch = useDispatch();
   const handelcancel = () => {
@@ -32,8 +34,14 @@ const ModalUpdate = () => {
   };
 
   useEffect(() => {
-    const { codeProduct, productName, priceCapital, priceSell, inventory, filePath } =
-      modalUpdate;
+    const { codeProduct, productName, priceCapital, priceSell, inventory, filePath } = modalUpdate;
+    setCodeProductState(codeProduct)
+    setProductNameState(productName)
+    setPriceCapitalState(priceCapital)
+    setPriceSellState(priceSell)
+    setInventoryState(inventory)
+    setFilePath(filePath)
+
     form.setFieldsValue({
       codeProduct: codeProduct,
       productName: productName,
@@ -41,7 +49,6 @@ const ModalUpdate = () => {
       priceSell: priceSell,
       inventory: inventory,
     });
-    setFilePath(filePath)
   }, [modalUpdate]);
 
   // dữ liệu form
@@ -103,6 +110,26 @@ const ModalUpdate = () => {
     </div>
   );
 
+  const handleSubmitUpdate = () => {
+    updateProduct({
+      codeProduct: codeProductState, productName: productNameState,
+      priceCapital: priceCapitalState,
+      priceSell: priceSellState,
+      inventory: inventoryState,
+      filePath
+    })
+      .then(res => {
+        if (res.data.success) {
+          dispatch(setListCategory(res.data.listCategory))
+          openNotificationWithIcon('success', res.data.message)
+          handelcancel()
+        } else {
+          openNotificationWithIcon('error', res.data.message)
+        }
+      })
+      .catch(() => openNotificationWithIcon('error', 'Có lỗi xảy ra, xin vui lòng thử lại!'))
+  }
+
   return (
     <>
       <Modal
@@ -151,8 +178,7 @@ const ModalUpdate = () => {
                 rules={[{ required: true, message: 'Tên sản phẩm bắt buộc' }]}
               >
                 <Input
-                  value={inputproductName}
-                  onChange={(e) => setInputproductName(e.target.value)}
+                  onChange={(e) => setProductNameState(e.target.value)}
                 />
               </Form.Item>
               <Form.Item
@@ -160,14 +186,14 @@ const ModalUpdate = () => {
                 label="Giá nhập"
                 rules={[{ required: true, message: 'Giá nhập bắt buộc' }]}
               >
-                <Input />
+                <Input onChange={(e) => setPriceCapitalState(e.target.value)} />
               </Form.Item>
               <Form.Item
                 name="priceSell"
                 label="Giá bán"
                 rules={[{ required: true, message: 'Giá bán bắt buộc' }]}
               >
-                <Input />
+                <Input onChange={(e) => setPriceSellState(e.target.value)} />
               </Form.Item>
               <Form.Item
                 name="inventory"
@@ -176,7 +202,7 @@ const ModalUpdate = () => {
                   { required: true, message: 'Số lượng sản phẩm bắt buộc' },
                 ]}
               >
-                <Input />
+                <Input onChange={(e) => setInventoryState(e.target.value)} />
               </Form.Item>
             </Col>
           </Row>
@@ -205,6 +231,7 @@ const ModalUpdate = () => {
               </Button>
               <Button
                 className="font-weight-bold"
+                onClick={() => handleSubmitUpdate()}
                 style={{
                   background: '#4bac4d',
                   border: 'none',

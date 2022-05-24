@@ -1,5 +1,6 @@
 const Goods = require("../../models/Goods");
 const { handleCount } = require("../../helpers/handleCount");
+const { arrayNoDuplicates } = require('../../helpers/arrayNoDuplicates')
 
 class goodController {
   // [POST] /api/good/add
@@ -60,7 +61,7 @@ class goodController {
       priceCapital,
       priceSell,
       inventory,
-      urlImg,
+      filePath,
     } = req.body;
 
     try {
@@ -71,13 +72,16 @@ class goodController {
           priceCapital,
           priceSell,
           inventory,
-          urlImg,
+          filePath,
         }
       );
+
+      const listCategory = await Goods.find({})
 
       return res.status(200).json({
         success: true,
         message: "Cập nhật sản phẩm thành công!",
+        listCategory
       });
     } catch (error) {
       res.json({
@@ -158,6 +162,42 @@ class goodController {
       });
     }
   }
+
+  // [POST] /api/good/find
+  async find(req, res) {
+    const { find } = req.body
+    
+    try {
+        if (find != '') {
+            const arrayFind = new Array
+            const codeFind = await Goods.find({ codeProduct: { $regex: find, $options: 'i' } })
+            const productName = await Goods.find({ productName: { $regex: find, $options: 'i' } })
+
+            arrayFind.push(...codeFind)
+            arrayFind.push(...productName)
+
+            return res.status(200).json({
+                success: true,
+                arrayFind: arrayNoDuplicates(arrayFind)
+            })
+        } else {
+            const arrayFind = await Goods.find({})
+
+            return res.status(200).json({
+                success: true,
+                arrayFind
+            })
+        }
+
+
+    } catch (error) {
+        res.json({
+            success: false,
+            message: 'Đã lỗi xảy ra, vui lòng thử lại!',
+            error
+        })
+    }
+}
 }
 
 module.exports = new goodController();

@@ -22,4 +22,7 @@ router.post('/remove', checkTokenAdmin, goodController.remove)
 // POST /api/good/uploadIMG
 router.post('/uploadIMG', upload.single('file'), goodController.uploadImg)
 
+// POST /api/good/find
+router.post('/find', checkTokenAdmin, goodController.find)
+
 module.exports = router

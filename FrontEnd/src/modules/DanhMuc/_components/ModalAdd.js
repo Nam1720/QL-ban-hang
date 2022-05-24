@@ -20,7 +20,7 @@ const CategoryModalAdd = () => {
   const [fileList, setFileList] = useState([]);
   const [form] = Form.useForm();
   const modalAdd = useSelector((state) => state.category.modalAdd);
-  const modalAdds = useSelector((state) => state.category.listCategory);
+  const listCategory = useSelector((state) => state.category.listCategory);
 
   const onFinish = async () => {
     const values = await form.validateFields();
@@ -30,7 +30,7 @@ const CategoryModalAdd = () => {
       if (res.data.success) {
         openNotificationWithIcon('success', res.data.message);
 
-        dispatch(setListCategory([...modalAdds, res.data.newGood]));
+        dispatch(setListCategory([...listCategory, res.data.newGood]));
         handelcancel();
       } else {
         openNotificationWithIcon('error', res.data.message);

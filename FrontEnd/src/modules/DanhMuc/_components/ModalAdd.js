@@ -5,10 +5,10 @@ import {
   DeleteOutlined,
   UploadOutlined,
 } from '@ant-design/icons';
-import { Button, Col, Modal, Row, Space, Upload } from 'antd';
+import { Button, Col, InputNumber, Modal, Row, Space, Upload } from 'antd';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Form, Input, InputNumber } from 'antd';
+import { Form, Input } from 'antd';
 import { setListCategory, setmodalAdd } from '../_store/categorySlice';
 import { openNotificationWithIcon } from '../../../helpers/funcs';
 import { addProduct } from '../_api';
@@ -26,12 +26,18 @@ const CategoryModalAdd = () => {
   const onFinish = async () => {
     const values = await form.validateFields();
 
-    console.log('form: ', values);
     addProduct({ ...values, filePath }).then((res) => {
       if (res.data.success) {
         openNotificationWithIcon('success', res.data.message);
-
         dispatch(setListCategory([...listCategory, res.data.newGood]));
+        form.setFieldsValue({
+          productName: '',
+          codeProduct: '',
+          priceCapital: '',
+          priceSell: '',
+          inventory: '',
+        });
+
         handelcancel();
       } else {
         openNotificationWithIcon('error', res.data.message);
@@ -50,19 +56,15 @@ const CategoryModalAdd = () => {
     new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
-
       reader.onload = () => resolve(reader.result);
-
       reader.onerror = (error) => reject(error);
     });
 
   const handleCancelImg = () => setPreviewVisible(false);
-
   const handlePreview = async (file) => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
     }
-
     setPreviewImage(file.url || file.preview);
     setPreviewVisible(true);
     setPreviewTitle(
@@ -80,7 +82,7 @@ const CategoryModalAdd = () => {
       openNotificationWithIcon('error', 'Upload ảnh thất bại, vui lòng thử lại!')
     }
   };
-
+  
   const uploadButton = (
     <div>
       <div className="btn-upload d-flex-center">
@@ -94,10 +96,6 @@ const CategoryModalAdd = () => {
   const handelcancel = () => {
     dispatch(setmodalAdd(false));
   };
-
-  // const onFinish = (values) => {
-  //   console.log(values);
-  // };
 
   const onReset = () => {
     form.resetFields();
@@ -157,14 +155,18 @@ const CategoryModalAdd = () => {
                 label="Giá nhập"
                 rules={[{ required: true, message: 'Giá nhập bắt buộc' }]}
               >
-                <InputNumber />
+                <InputNumber
+                  formatter={(value) =>
+                    `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                  }
+                />
               </Form.Item>
               <Form.Item
                 name="priceSell"
                 label="Giá bán"
                 rules={[{ required: true, message: 'Giá bán bắt buộc' }]}
               >
-                <InputNumber />
+                <Input type="number" />
               </Form.Item>
               <Form.Item
                 name="inventory"
@@ -173,7 +175,7 @@ const CategoryModalAdd = () => {
                   { required: true, message: 'Số lượng sản phẩm bắt buộc' },
                 ]}
               >
-                <InputNumber />
+                <Input type="number" />
               </Form.Item>
             </Col>
           </Row>

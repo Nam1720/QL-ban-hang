@@ -19,7 +19,7 @@ export default {
         },
         {
           name: 'Thiết lập giá',
-          url: '/hang-hoa/thiet-lap-gia',
+          url: '/thiet-lap-gia',
           icon: 'icon-home',
           children: [],
         },

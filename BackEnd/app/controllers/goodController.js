@@ -21,6 +21,7 @@ class goodController {
       return res.status(200).json({
         success: true,
         message: "Đã thêm sản phẩm thành công",
+        newGood
       });
     } catch (error) {
       res.status(200).json({

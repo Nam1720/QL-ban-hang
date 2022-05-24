@@ -4,7 +4,7 @@ const { handleCount } = require("../../helpers/handleCount");
 class goodController {
   // [POST] /api/good/add
   async add(req, res) {
-    const { productName, priceCapital, priceSell, inventory } = req.body;
+    const { productName, priceCapital, priceSell, inventory, filePath } = req.body;
 
     try {
       const Good = await Goods.find({});
@@ -15,6 +15,7 @@ class goodController {
         priceCapital,
         priceSell,
         inventory,
+        filePath
       });
       await newGood.save();
 
@@ -130,6 +131,30 @@ class goodController {
         success: false,
         message: "Đã lỗi xảy ra, vui lòng thử lại!",
         error,
+      });
+    }
+  }
+
+
+  // [POST] /api/good/uploadIMG
+  async uploadImg(req, res) {
+    try {
+      if (req.file.path) {
+        return res.status(200).json({
+          success: true,
+          message: `Thêm ảnh thành công`,
+          filePath: req.file.path,
+        });
+      } else {
+        return res.status(200).json({
+          success: false,
+          message: `Thêm ảnh thất bại`
+        });
+      }
+    } catch (error) {
+      return res.json({
+        success: false,
+        message: `Có lỗi xảy ra, xin vui lòng thử lại!`
       });
     }
   }

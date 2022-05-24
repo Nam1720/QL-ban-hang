@@ -27,7 +27,7 @@ const GoodSchema = new Schema({
         required: true
     },
 
-    urlImg: {
+    filePath: {
         type: String,
         default: 'defaultProduct.jpg'
     }

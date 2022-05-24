@@ -47,7 +47,7 @@ app.set('view engine', '.hbs');
 app.set('views', path.join(__dirname, 'resources', 'views'));
 
 // Xử lý khi đường dẫn là file tĩnh thì sẽ lao vào public
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'uploads')));
 
 //Lấy dữ liệu từ POST
 app.use(express.urlencoded({

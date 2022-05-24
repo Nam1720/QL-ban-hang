@@ -18,13 +18,15 @@ const CategoryModalAdd = () => {
   const [previewImage, setPreviewImage] = useState('');
   const [previewTitle, setPreviewTitle] = useState('');
   const [fileList, setFileList] = useState([]);
+  const [filePath, setFilePath] = useState('http://localhost:3000/defaultProduct.png')
   const [form] = Form.useForm();
   const modalAdd = useSelector((state) => state.category.modalAdd);
   const listCategory = useSelector((state) => state.category.listCategory);
 
   const onFinish = async () => {
     const values = await form.validateFields();
-    addProduct(values).then((res) => {
+
+    addProduct({ ...values, filePath }).then((res) => {
       if (res.data.success) {
         openNotificationWithIcon('success', res.data.message);
         dispatch(setListCategory([...listCategory, res.data.newGood]));
@@ -70,10 +72,20 @@ const CategoryModalAdd = () => {
     );
   };
 
-  const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
+  const handleChange = ({ fileList: newFileList }) => {
+    setFileList(newFileList)
+
+    if (newFileList[0].status == 'done') {
+      const link = newFileList[0].response.filePath.split('\\')[1]
+      setFilePath(`http://localhost:3000/${link}`)
+    } else if (newFileList[0].status == 'error') {
+      openNotificationWithIcon('error', 'Upload ảnh thất bại, vui lòng thử lại!')
+    }
+  };
+  
   const uploadButton = (
     <div>
-      <div className="btn-upload">
+      <div className="btn-upload d-flex-center">
         {' '}
         <UploadOutlined /> Tải ảnh sản phẩm
       </div>
@@ -101,13 +113,16 @@ const CategoryModalAdd = () => {
         <Form {...layout} form={form} name="control-hooks" onFinish={onFinish}>
           <Row>
             <Col span={8}>
+              <div style={{ width: '100%', height: '200px', marginBottom: '12px' }}>
+                <img style={{ width: '100%', height: '100%', objectFit: 'cover' }} src={filePath} />
+              </div>
               <Upload
-                action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                listType="picture"
+                action="http://localhost:3000/api/good/uploadIMG"
                 fileList={fileList}
                 onPreview={handlePreview}
                 onChange={handleChange}
                 maxCount={1}
+                className='d-flex-center'
               >
                 {fileList.length >= 8 ? null : uploadButton}
               </Upload>

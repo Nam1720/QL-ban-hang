@@ -1,4 +1,5 @@
 const Goods = require("../../models/Goods");
+const { handleCount } = require("../../helpers/handleCount");
 
 class goodController {
   // [POST] /api/good/add
@@ -9,7 +10,7 @@ class goodController {
       const Good = await Goods.find({});
 
       const newGood = new Goods({
-        codeProduct: `SP${Good.length + 1}`,
+        codeProduct: `SP${handleCount("SP", "codeProduct", Good)}`,
         productName,
         priceCapital,
         priceSell,
@@ -20,7 +21,6 @@ class goodController {
       return res.status(200).json({
         success: true,
         message: "Đã thêm sản phẩm thành công",
-        newGood,
       });
     } catch (error) {
       res.status(200).json({

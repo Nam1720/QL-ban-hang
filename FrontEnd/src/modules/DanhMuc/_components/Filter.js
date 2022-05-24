@@ -1,14 +1,6 @@
 /* eslint-disable react/jsx-no-undef */
 import React from 'react';
 import { Button, Input, Space } from 'antd';
-import {
-  PlusOutlined,
-  CaretDownOutlined,
-  ExportOutlined,
-  MoreOutlined,
-} from '@ant-design/icons';
-import { useDispatch } from 'react-redux';
-import { setModalAdd } from '../_store/categorySlice';
 import { PlusOutlined } from '@ant-design/icons';
 import { useDispatch } from 'react-redux';
 import { setmodalAdd } from '../_store/categorySlice';

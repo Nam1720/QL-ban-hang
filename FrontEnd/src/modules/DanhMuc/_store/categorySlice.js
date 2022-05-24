@@ -14,6 +14,7 @@ const categorySlice = createSlice({
       priceCapital: '',
       priceSell: '',
       inventory: '',
+      filePath: ''
     },
     modalRemove: {
       view: false,

@@ -26,7 +26,8 @@ const TableData = () => {
     productName,
     priceCapital,
     priceSell,
-    inventory
+    inventory,
+    filePath
   ) => {
     dispatch(
       setmodalUpdate({
@@ -35,6 +36,7 @@ const TableData = () => {
         priceCapital,
         priceSell,
         inventory,
+        filePath
       })
     );
   };
@@ -104,7 +106,8 @@ const TableData = () => {
                 record.productName,
                 record.priceCapital,
                 record.priceSell,
-                record.inventory
+                record.inventory,
+                record.filePath
               )
             }
           >

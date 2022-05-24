@@ -8,6 +8,8 @@ import { Button, Col, Form, Input, Modal, Row, Space, Upload } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setmodalUpdate } from '../_store/categorySlice';
+import { openNotificationWithIcon } from '../../../helpers/funcs';
+
 
 const ModalUpdate = () => {
   const modalUpdate = useSelector((state) => state.category.modalUpdate);
@@ -17,6 +19,7 @@ const ModalUpdate = () => {
   const [previewImage, setPreviewImage] = useState('');
   const [previewTitle, setPreviewTitle] = useState('');
   const [fileList, setFileList] = useState([]);
+  const [filePath, setFilePath] = useState()
   const [form] = Form.useForm();
 
   const [inputproductName, setInputproductName] = useState(
@@ -29,7 +32,7 @@ const ModalUpdate = () => {
   };
 
   useEffect(() => {
-    const { codeProduct, productName, priceCapital, priceSell, inventory } =
+    const { codeProduct, productName, priceCapital, priceSell, inventory, filePath } =
       modalUpdate;
     form.setFieldsValue({
       codeProduct: codeProduct,
@@ -38,6 +41,7 @@ const ModalUpdate = () => {
       priceSell: priceSell,
       inventory: inventory,
     });
+    setFilePath(filePath)
   }, [modalUpdate]);
 
   // dữ liệu form
@@ -79,13 +83,22 @@ const ModalUpdate = () => {
   };
 
   // hiển thị dữ liệu modal ảnh
-  const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
+  const handleChange = ({ fileList: newFileList }) => {
+    setFileList(newFileList)
+
+    if (newFileList[0].status == 'done') {
+      const link = newFileList[0].response.filePath.split('\\')[1]
+      setFilePath(`http://localhost:3000/${link}`)
+    } else if (newFileList[0].status == 'error') {
+      openNotificationWithIcon('error', 'Upload ảnh thất bại, vui lòng thử lại!')
+    }
+  };
 
   //xử lý sự kiện các btn ở modal
   const uploadButton = (
     <div>
       <div className="btn-upload">
-        <UploadOutlined /> Tải ảnh sản phẩm
+        <UploadOutlined /> Cập nhật ảnh sản phẩm
       </div>
     </div>
   );
@@ -102,13 +115,16 @@ const ModalUpdate = () => {
         <Form {...layout} form={form} name="control-hooks" onFinish={onFinish}>
           <Row>
             <Col span={8}>
+              <div style={{ width: '100%', height: '200px', marginBottom: '12px' }}>
+                <img style={{ width: '100%', height: '100%', objectFit: 'cover' }} src={filePath} />
+              </div>
               <Upload
-                action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                listType="picture"
+                action="http://localhost:3000/api/good/uploadIMG"
                 fileList={fileList}
                 onPreview={handlePreview}
                 onChange={handleChange}
                 maxCount={1}
+                className='d-flex-center'
               >
                 {fileList.length >= 8 ? null : uploadButton}
               </Upload>

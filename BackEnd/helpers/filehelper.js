@@ -3,10 +3,10 @@ const multer = require('multer');
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, 'public');
+        cb(null, 'uploads');
     },
     filename: (req, file, cb) => {
-        cb(null, file.originalname);
+        cb(null, new Date().toISOString().replace(/:/g, '-') + '-' + file.originalname);
     }
 });
 const filefilter = (req, file, cb) => {

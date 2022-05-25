@@ -35,6 +35,7 @@
     }
     .ant-menu {
       background: $white;
+      font-weight: 700;
       .nav-icon {
         // margin-right: 15px;
         font-size: 20px;
@@ -58,7 +59,7 @@
           // border-left: 5px solid $red_dark;
           background-color: $gray-light;
           a {
-            color: $black
+            color: $black;
           }
           i{
             color: $red_dark;
@@ -334,6 +335,8 @@
     background-color: transparent;
   }
 }
+
+
 // ANT AFFIX
 .ant-affix {
   height: 50px !important;

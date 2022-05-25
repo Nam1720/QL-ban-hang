@@ -25,11 +25,15 @@ const Sidebar = () => {
     >
       {/* <div className="logo"><img src={Logo} /></div> */}
 
-      <PermissionRoute navConfig={navigation} theme="light" mode="inline"  />
-      <i onClick={toggleSidebar} className={
-        collapse ? 'icon-arrow-left icon-nav icon-nav__close' : 'icon-arrow-left icon-nav icon-nav__open'
-      }></i>
-
+      <PermissionRoute navConfig={navigation} theme="light" mode="inline" />
+      <i
+        onClick={toggleSidebar}
+        className={
+          collapse
+            ? 'icon-backward2 icon-nav icon-nav__close'
+            : 'icon-backward2 icon-nav icon-nav__open'
+        }
+      ></i>
     </Sider>
   );
 };

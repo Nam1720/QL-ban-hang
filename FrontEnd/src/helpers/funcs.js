@@ -61,7 +61,7 @@ export const formatNumber = (value) => {
 };
 
 export const formatPrice = (value) => {
-  return `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  return `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };
 
 export const formatPriceVND = (value) =>
@@ -155,13 +155,14 @@ export const handleTotal = (arrayFind) => {
   let totalRevenue = 0;
   let totalOld = 0;
 
-  arrayFind.map(invoice => {
-    totalRevenue = totalRevenue + Number(invoice.totalMoney)
+  arrayFind.map((invoice) => {
+    totalRevenue = totalRevenue + Number(invoice.totalMoney);
 
-    invoice.productsBuying.map(good => {
-      totalOld = totalOld + ( Number(good.countProduct) * Number(good.priceCapital) )
-    })
-  })
+    invoice.productsBuying.map((good) => {
+      totalOld =
+        totalOld + Number(good.countProduct) * Number(good.priceCapital);
+    });
+  });
 
-  return [totalRevenue, totalOld]
-}
+  return [totalRevenue, totalOld];
+};

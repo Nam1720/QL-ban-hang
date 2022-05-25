@@ -3,24 +3,24 @@ export default {
     {
       name: 'Tổng quan',
       url: '/',
-      icon: 'home',
+      icon: 'icon-home',
       children: [],
     },
     {
       name: 'Hàng Hóa',
       url: '/hang-hoa',
-      icon: 'home',
+      icon: 'icon-cart',
       children: [
         {
           name: 'Danh Mục',
           url: '/danh-muc',
-          icon: 'icon-home',
+          icon: 'icon-menu',
           children: [],
         },
         {
           name: 'Thiết lập giá',
           url: '/thiet-lap-gia',
-          icon: 'icon-home',
+          icon: 'icon-coin-dollar',
           children: [],
         },
       ],
@@ -28,19 +28,19 @@ export default {
     {
       name: 'Hóa Đơn',
       url: '/hoa-don',
-      icon: 'icon-home',
+      icon: 'icon-file-text2',
       children: [],
     },
     {
       name: 'Khách hàng',
       url: '/khach-hang',
-      icon: 'icon-home',
+      icon: 'icon-users',
       children: [],
     },
     {
       name: 'Nhân Viên',
       url: '/nhan-vien',
-      icon: 'icon-home',
+      icon: 'icon-user-check',
       children: [],
     },
   ],

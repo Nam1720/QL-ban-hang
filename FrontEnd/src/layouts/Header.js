@@ -24,14 +24,14 @@ const Header = () => {
   const dispatch = useDispatch();
   const changeLanguage = (key) => {
     switch (key) {
-    case 'vi':
-      setLanguage('Vietnamese');
-      i18n.changeLanguage(key);
-      break;
-    case 'en':
-      setLanguage('English');
-      i18n.changeLanguage(key);
-      break;
+      case 'vi':
+        setLanguage('Vietnamese');
+        i18n.changeLanguage(key);
+        break;
+      case 'en':
+        setLanguage('English');
+        i18n.changeLanguage(key);
+        break;
     }
   };
   const menu = (
@@ -87,11 +87,9 @@ const Header = () => {
           onClick={(e) => e.preventDefault()}
         >
           <div className="cusor-pointer d-flex-center">
-            <i className="icon-user3 pr-1"></i>
+            <i className="icon-user-circle-o pr-1"></i>
             <Text strong>
-              {authInfo && !isEmpty(authInfo)
-                ? authInfo
-                : 'Update'}
+              {authInfo && !isEmpty(authInfo) ? authInfo : 'Update'}
             </Text>
           </div>
         </Dropdown>

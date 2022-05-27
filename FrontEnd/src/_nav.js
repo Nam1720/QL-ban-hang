@@ -12,8 +12,8 @@ export default {
       icon: 'icon-cart',
       children: [
         {
-          name: 'Danh Mục',
-          url: '/danh-muc',
+          name: 'Sản phẩm',
+          url: '/san-pham',
           icon: 'icon-menu',
           children: [],
         },

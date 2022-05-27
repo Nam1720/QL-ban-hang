@@ -11,7 +11,7 @@ const Invoice = React.lazy(() => import('../src/modules/Invoice/_view'));
 const routes = [
   { path: '/', exact: true, name: AUTH.MODULE_DASHBOARD, component: Dashboard },
   {
-    path: '/danh-muc',
+    path: '/san-pham',
     exact: true,
     name: AUTH.MODULE_DASHBOARD,
     component: DanhMuc,

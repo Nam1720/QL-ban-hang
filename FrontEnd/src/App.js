@@ -19,11 +19,17 @@ const LoginPage = Loadable({
   loading
 });
 
+const SellPage = Loadable({
+  loader: () => import('modules/SELL/_view'),
+  loading
+});
+
 const App = () => {
   return (
     <Router history={history}>
       <Switch>
         <Route path="/login" name="Login" component={LoginPage} />
+        <Route path="/sell" name="Sell" component={SellPage} />
         <Route path="/" name="Home" component={DefaultLayout} />
       </Switch>
     </Router>

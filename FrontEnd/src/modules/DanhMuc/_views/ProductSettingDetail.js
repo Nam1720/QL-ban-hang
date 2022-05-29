@@ -3,21 +3,20 @@ import React from 'react';
 import Filter from '../_components/Filter';
 import CategoryModalAdd from '../_components/ModalAdd';
 import ModalRemove from '../_components/ModalRemove';
-import ModalUpdate from '../_components/ModalUpdate';
-import TableData from '../_components/TableData';
+import PriceSettingModalUpdate from '../_components/PriceSettingModalUpdate';
+import PriceSettingTable from '../_components/PriceSettingTable';
 import '../_styles/style.scss';
-
-const DanhMuc = () => {
+const ProductSettingDetail = () => {
   return (
-    <div className="panel p-16">
+    <div>
       <Filter />
       <Divider />
-      <TableData />
       <CategoryModalAdd />
-      <ModalUpdate />
+      <PriceSettingModalUpdate />
       <ModalRemove />
+      <PriceSettingTable />
     </div>
   );
 };
 
-export default DanhMuc;
+export default ProductSettingDetail;

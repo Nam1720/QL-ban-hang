@@ -2,8 +2,12 @@ import React from 'react';
 // import PermissionData from './middleware/PermissionData'
 import * as AUTH from 'auth/_store/constants';
 const Dashboard = React.lazy(() => import('dashboard/_views'));
-const DanhMuc = React.lazy(() => import('../src/modules/DanhMuc/_views'));
-const PriceSetting = React.lazy(() => import('../src/modules/DanhMuc/_views'));
+const Product = React.lazy(() =>
+  import('./modules/DanhMuc/_views/ProductDetail')
+);
+const PriceSetting = React.lazy(() =>
+  import('./modules/DanhMuc/_views/ProductSettingDetail')
+);
 const Guest = React.lazy(() => import('../src/modules/Guest/_view'));
 const Staff = React.lazy(() => import('../src/modules/Staff/_view'));
 const Invoice = React.lazy(() => import('../src/modules/Invoice/_view'));
@@ -14,7 +18,7 @@ const routes = [
     path: '/san-pham',
     exact: true,
     name: AUTH.MODULE_DASHBOARD,
-    component: DanhMuc,
+    component: Product,
   },
   {
     path: '/thiet-lap-gia',

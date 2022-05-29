@@ -10,7 +10,7 @@ import {
 import { getListProduct } from '../_api';
 import { openNotificationWithIcon } from '../../../helpers/funcs';
 
-const PriceSetting = () => {
+const PriceSettingTable = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     getListProduct().then((res) => {
@@ -23,18 +23,22 @@ const PriceSetting = () => {
   }, []);
 
   const handleClickUpdate = (
+    codeProduct,
     productName,
     priceCapital,
     priceSell,
-    inventory
+    inventory,
+    filePath
   ) => {
     dispatch(
       setmodalUpdate({
         view: true,
+        codeProduct,
         productName,
         priceCapital,
         priceSell,
         inventory,
+        filePath,
       })
     );
   };
@@ -68,25 +72,20 @@ const PriceSetting = () => {
       dataIndex: 'productName',
     },
     {
-      title: 'Giá bán',
+      title: 'Giá nhập',
       align: 'center',
       width: '16%',
       dataIndex: 'priceCapital',
       render: (text) => <span>{text ? formatPrice(text) : text}</span>,
     },
     {
-      title: 'Giá nhập',
+      title: 'Giá bán',
       width: '16%',
       align: 'center',
       dataIndex: 'priceSell',
       render: (text) => <span>{text ? formatPrice(text) : text}</span>,
     },
-    {
-      title: 'Tồn kho',
-      width: '8%',
-      align: 'center',
-      dataIndex: 'inventory',
-    },
+
     {
       title: 'Hành động',
       align: 'center',
@@ -101,14 +100,16 @@ const PriceSetting = () => {
             style={{ background: '#4bac4d', border: 'none' }}
             onClick={() =>
               handleClickUpdate(
+                record.codeProduct,
                 record.productName,
                 record.priceCapital,
                 record.priceSell,
-                record.inventory
+                record.inventory,
+                record.filePath
               )
             }
           >
-            Cập nhật
+            Cập nhật giá
           </Button>
           <Button
             type="primary"
@@ -125,8 +126,9 @@ const PriceSetting = () => {
   ];
 
   const data = useSelector((state) => state.category.listCategory);
+  const loadingTable = useSelector((state) => state.category.loadingTable);
 
-  return <Table columns={columns} dataSource={data} />;
+  return <Table loading={loadingTable} columns={columns} dataSource={data} />;
 };
 
-export default PriceSetting;
+export default PriceSettingTable;

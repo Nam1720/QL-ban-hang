@@ -1,11 +1,12 @@
 const Goods = require("../../models/Goods");
 const { handleCount } = require("../../helpers/handleCount");
-const { arrayNoDuplicates } = require('../../helpers/arrayNoDuplicates')
+const { arrayNoDuplicates } = require("../../helpers/arrayNoDuplicates");
 
 class goodController {
   // [POST] /api/good/add
   async add(req, res) {
-    const { productName, priceCapital, priceSell, inventory, filePath } = req.body;
+    const { productName, priceCapital, priceSell, inventory, filePath } =
+      req.body;
 
     try {
       const Good = await Goods.find({});
@@ -16,14 +17,14 @@ class goodController {
         priceCapital,
         priceSell,
         inventory,
-        filePath
+        filePath,
       });
       await newGood.save();
 
       return res.status(200).json({
         success: true,
         message: "Đã thêm sản phẩm thành công",
-        newGood
+        newGood,
       });
     } catch (error) {
       res.status(200).json({
@@ -76,12 +77,12 @@ class goodController {
         }
       );
 
-      const listCategory = await Goods.find({})
+      const listCategory = await Goods.find({});
 
       return res.status(200).json({
         success: true,
         message: "Cập nhật sản phẩm thành công!",
-        listCategory
+        listCategory,
       });
     } catch (error) {
       res.json({
@@ -103,10 +104,12 @@ class goodController {
           priceSell,
         }
       );
+      const listCategory = await Goods.find({});
 
       return res.status(200).json({
         success: true,
         message: "Cập nhật sản phẩm thành công!",
+        listCategory,
       });
     } catch (error) {
       res.json({
@@ -139,7 +142,6 @@ class goodController {
     }
   }
 
-
   // [POST] /api/good/uploadIMG
   async uploadImg(req, res) {
     try {
@@ -152,52 +154,54 @@ class goodController {
       } else {
         return res.status(200).json({
           success: false,
-          message: `Thêm ảnh thất bại`
+          message: `Thêm ảnh thất bại`,
         });
       }
     } catch (error) {
       return res.json({
         success: false,
-        message: `Có lỗi xảy ra, xin vui lòng thử lại!`
+        message: `Có lỗi xảy ra, xin vui lòng thử lại!`,
       });
     }
   }
 
   // [POST] /api/good/find
   async find(req, res) {
-    const { find } = req.body
-    
+    const { find } = req.body;
+
     try {
-        if (find != '') {
-            const arrayFind = new Array
-            const codeFind = await Goods.find({ codeProduct: { $regex: find, $options: 'i' } })
-            const productName = await Goods.find({ productName: { $regex: find, $options: 'i' } })
+      if (find != "") {
+        const arrayFind = new Array();
+        const codeFind = await Goods.find({
+          codeProduct: { $regex: find, $options: "i" },
+        });
+        const productName = await Goods.find({
+          productName: { $regex: find, $options: "i" },
+        });
 
-            arrayFind.push(...codeFind)
-            arrayFind.push(...productName)
+        arrayFind.push(...codeFind);
+        arrayFind.push(...productName);
 
-            return res.status(200).json({
-                success: true,
-                arrayFind: arrayNoDuplicates(arrayFind)
-            })
-        } else {
-            const arrayFind = await Goods.find({})
+        return res.status(200).json({
+          success: true,
+          arrayFind: arrayNoDuplicates(arrayFind),
+        });
+      } else {
+        const arrayFind = await Goods.find({});
 
-            return res.status(200).json({
-                success: true,
-                arrayFind
-            })
-        }
-
-
+        return res.status(200).json({
+          success: true,
+          arrayFind,
+        });
+      }
     } catch (error) {
-        res.json({
-            success: false,
-            message: 'Đã lỗi xảy ra, vui lòng thử lại!',
-            error
-        })
+      res.json({
+        success: false,
+        message: "Đã lỗi xảy ra, vui lòng thử lại!",
+        error,
+      });
     }
-}
+  }
 }
 
 module.exports = new goodController();

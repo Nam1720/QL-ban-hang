@@ -23,15 +23,17 @@ const Sidebar = () => {
       collapsed={collapse}
       className="site-layout-background"
     >
-      {/* <div className="logo"><img src={Logo} /></div> */}
+      {/* <div className="logo">
+        <img src={Logo} />
+      </div> */}
 
       <PermissionRoute navConfig={navigation} theme="light" mode="inline" />
       <i
         onClick={toggleSidebar}
         className={
           collapse
-            ? 'icon-backward2 icon-nav icon-nav__close'
-            : 'icon-backward2 icon-nav icon-nav__open'
+            ? 'icon-circle-left icon-nav icon-nav__close'
+            : 'icon-circle-left icon-nav icon-nav__open'
         }
       ></i>
     </Sider>

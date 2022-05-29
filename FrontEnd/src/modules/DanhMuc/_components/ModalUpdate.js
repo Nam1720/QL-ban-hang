@@ -11,21 +11,22 @@ import { setmodalUpdate, setListCategory } from '../_store/categorySlice';
 import { openNotificationWithIcon } from '../../../helpers/funcs';
 import { updateProduct } from '../_api';
 
-
 const ModalUpdate = () => {
   const modalUpdate = useSelector((state) => state.category.modalUpdate);
-  console.log(modalUpdate);
-
   const [previewVisible, setPreviewVisible] = useState(false);
   const [previewImage, setPreviewImage] = useState('');
   const [previewTitle, setPreviewTitle] = useState('');
   const [fileList, setFileList] = useState([]);
-  const [filePath, setFilePath] = useState()
-  const [codeProductState, setCodeProductState] = useState()
-  const [productNameState, setProductNameState] = useState(modalUpdate.productName)
-  const [priceCapitalState, setPriceCapitalState] = useState(modalUpdate.priceCapital)
+  const [filePath, setFilePath] = useState();
+  const [codeProductState, setCodeProductState] = useState();
+  const [productNameState, setProductNameState] = useState(
+    modalUpdate.productName
+  );
+  const [priceCapitalState, setPriceCapitalState] = useState(
+    modalUpdate.priceCapital
+  );
   const [priceSellState, setPriceSellState] = useState(modalUpdate.priceSell);
-  const [inventoryState, setInventoryState] = useState(modalUpdate.inventory)
+  const [inventoryState, setInventoryState] = useState(modalUpdate.inventory);
   const [form] = Form.useForm();
 
   const dispatch = useDispatch();
@@ -34,13 +35,20 @@ const ModalUpdate = () => {
   };
 
   useEffect(() => {
-    const { codeProduct, productName, priceCapital, priceSell, inventory, filePath } = modalUpdate;
-    setCodeProductState(codeProduct)
-    setProductNameState(productName)
-    setPriceCapitalState(priceCapital)
-    setPriceSellState(priceSell)
-    setInventoryState(inventory)
-    setFilePath(filePath)
+    const {
+      codeProduct,
+      productName,
+      priceCapital,
+      priceSell,
+      inventory,
+      filePath,
+    } = modalUpdate;
+    setCodeProductState(codeProduct);
+    setProductNameState(productName);
+    setPriceCapitalState(priceCapital);
+    setPriceSellState(priceSell);
+    setInventoryState(inventory);
+    setFilePath(filePath);
 
     form.setFieldsValue({
       codeProduct: codeProduct,
@@ -91,13 +99,16 @@ const ModalUpdate = () => {
 
   // hiển thị dữ liệu modal ảnh
   const handleChange = ({ fileList: newFileList }) => {
-    setFileList(newFileList)
+    setFileList(newFileList);
 
     if (newFileList[0].status == 'done') {
-      const link = newFileList[0].response.filePath.split('\\')[1]
-      setFilePath(`http://localhost:3000/${link}`)
+      const link = newFileList[0].response.filePath.split('\\')[1];
+      setFilePath(`http://localhost:3000/${link}`);
     } else if (newFileList[0].status == 'error') {
-      openNotificationWithIcon('error', 'Upload ảnh thất bại, vui lòng thử lại!')
+      openNotificationWithIcon(
+        'error',
+        'Upload ảnh thất bại, vui lòng thử lại!'
+      );
     }
   };
 
@@ -112,23 +123,29 @@ const ModalUpdate = () => {
 
   const handleSubmitUpdate = () => {
     updateProduct({
-      codeProduct: codeProductState, productName: productNameState,
+      codeProduct: codeProductState,
+      productName: productNameState,
       priceCapital: priceCapitalState,
       priceSell: priceSellState,
       inventory: inventoryState,
-      filePath
+      filePath,
     })
-      .then(res => {
+      .then((res) => {
         if (res.data.success) {
-          dispatch(setListCategory(res.data.listCategory))
-          openNotificationWithIcon('success', res.data.message)
-          handelcancel()
+          dispatch(setListCategory(res.data.listCategory));
+          openNotificationWithIcon('success', res.data.message);
+          handelcancel();
         } else {
-          openNotificationWithIcon('error', res.data.message)
+          openNotificationWithIcon('error', res.data.message);
         }
       })
-      .catch(() => openNotificationWithIcon('error', 'Có lỗi xảy ra, xin vui lòng thử lại!'))
-  }
+      .catch(() =>
+        openNotificationWithIcon(
+          'error',
+          'Có lỗi xảy ra, xin vui lòng thử lại!'
+        )
+      );
+  };
 
   return (
     <>
@@ -142,8 +159,13 @@ const ModalUpdate = () => {
         <Form {...layout} form={form} name="control-hooks" onFinish={onFinish}>
           <Row>
             <Col span={8}>
-              <div style={{ width: '100%', height: '200px', marginBottom: '12px' }}>
-                <img style={{ width: '100%', height: '100%', objectFit: 'cover' }} src={filePath} />
+              <div
+                style={{ width: '100%', height: '200px', marginBottom: '12px' }}
+              >
+                <img
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  src={filePath}
+                />
               </div>
               <Upload
                 action="http://localhost:3000/api/good/uploadIMG"
@@ -151,7 +173,7 @@ const ModalUpdate = () => {
                 onPreview={handlePreview}
                 onChange={handleChange}
                 maxCount={1}
-                className='d-flex-center'
+                className="d-flex-center"
               >
                 {fileList.length >= 8 ? null : uploadButton}
               </Upload>
@@ -177,9 +199,7 @@ const ModalUpdate = () => {
                 label="Tên sản phẩm"
                 rules={[{ required: true, message: 'Tên sản phẩm bắt buộc' }]}
               >
-                <Input
-                  onChange={(e) => setProductNameState(e.target.value)}
-                />
+                <Input onChange={(e) => setProductNameState(e.target.value)} />
               </Form.Item>
               <Form.Item
                 name="priceCapital"

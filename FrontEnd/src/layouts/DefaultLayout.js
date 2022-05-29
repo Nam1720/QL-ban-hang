@@ -4,7 +4,7 @@ import { Layout } from 'antd';
 import { isLogin } from 'utils/jwt';
 import Loadable from 'react-loadable';
 import useRouter from 'hooks/useRouter';
-import routes from 'src/routes'
+import routes from 'src/routes';
 import PermissionContent from 'middleware/PermissionContent';
 import { Spin } from 'antd';
 
@@ -20,7 +20,7 @@ const loading = () => (
 
 const Page404 = Loadable({
   loader: () => import('modules/Commons/_views/Page404'),
-  loading
+  loading,
 });
 
 const DefaultLayout = () => {
@@ -32,10 +32,7 @@ const DefaultLayout = () => {
   }
 
   return (
-    <Layout
-      className="site-layout"
-      style={{ minHeight: '100vh' }}
-    >
+    <Layout className="site-layout" style={{ minHeight: '100vh' }}>
       <Suspense fallback={loading()}>
         <Header />
       </Suspense>
@@ -55,7 +52,7 @@ const DefaultLayout = () => {
                       exact
                       name={route.name}
                       middle={route.middleware}
-                      render={props => <route.component {...props} />}
+                      render={(props) => <route.component {...props} />}
                     />
                   ) : null;
                 })}

@@ -38,7 +38,7 @@ const TableData = () => {
         priceCapital,
         priceSell,
         inventory,
-        filePath
+        filePath,
       })
     );
   };
@@ -72,14 +72,14 @@ const TableData = () => {
       dataIndex: 'productName',
     },
     {
-      title: 'Giá bán',
+      title: 'Giá nhập',
       align: 'center',
       width: '16%',
       dataIndex: 'priceCapital',
       render: (text) => <span>{text ? formatPrice(text) : text}</span>,
     },
     {
-      title: 'Giá nhập',
+      title: 'Giá bán',
       width: '16%',
       align: 'center',
       dataIndex: 'priceSell',
@@ -131,7 +131,7 @@ const TableData = () => {
   ];
 
   const data = useSelector((state) => state.category.listCategory);
-  const loadingTable = useSelector(state => state.category.loadingTable)
+  const loadingTable = useSelector((state) => state.category.loadingTable);
 
   return <Table loading={loadingTable} columns={columns} dataSource={data} />;
 };

@@ -19,9 +19,15 @@ export const removeProduct = (codeProduct) => {
   });
 };
 
-
 export const updateProduct = (payload) => {
   return axios.post('http://localhost:3000/api/good/update', {
+    ...payload,
+    tokenAdmin: Cookies.get('ustkrohtodev'),
+  });
+};
+
+export const updatePriceSell = (payload) => {
+  return axios.post('http://localhost:3000/api/good/update-priceSell', {
     ...payload,
     tokenAdmin: Cookies.get('ustkrohtodev'),
   });

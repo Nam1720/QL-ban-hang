@@ -133,7 +133,16 @@ const TableData = () => {
   const data = useSelector((state) => state.category.listCategory);
   const loadingTable = useSelector((state) => state.category.loadingTable);
 
-  return <Table loading={loadingTable} columns={columns} dataSource={data} />;
+  return (
+    <>
+      <Table
+        id="test"
+        loading={loadingTable}
+        columns={columns}
+        dataSource={data}
+      />
+    </>
+  );
 };
 
 export default TableData;

@@ -1,3 +1,10 @@
+@import  '../../../assets/scss/variables';
+
+body {
+    background-color: $gray_light;
+}
+
+
 .sell__header {
     background: #1888e8;
     padding: 8px;
@@ -8,4 +15,69 @@
 
     &-account {
     }
+}
+
+.content {
+   
+
+    &__left {
+        width: 55%;
+        margin: 8px;
+
+        
+        &__list {
+            background: $white ;
+            border-radius: 10px;
+            padding: 8px;
+            width: 100%;
+            margin-bottom: 8px;
+            height: calc(100vh - 170px);
+        }
+
+        &__sum {
+            background: $white ;
+            border-radius: 10px;
+            padding: 8px;
+            width: 100%;
+            bottom:0;
+
+            &__price {
+                color: red;
+                font-size: 18px;
+            }
+        }
+    }
+    &__right {
+        width: 45%;
+        border-radius: 10px;
+        margin: 8px;
+        background: $white ;
+        height: calc(100vh - 114px);
+        padding: 8px;
+        position: relative;
+
+        .btn-check-out {
+            bottom: 8px;
+            width: 97.5%;
+            position: absolute;
+        }
+    }
+    
+
+}
+
+.ant-dropdown-menu {
+    width: 150px;
+}
+
+
+.sell-footer {
+    height: 50px;
+    background-color: $white;
+    padding: 0 10px 0 10px;
+    position: fixed;
+    bottom: 0;
+    width: 100vw;
+    justify-content: space-evenly;
+    align-items: center;
 }

@@ -199,6 +199,7 @@
   }
   .ant-select-selector {
     border-color: $gray_border;
+    border-radius: 8px !important;
   }
   &-multiple {
     .ant-select-selection-item {
@@ -383,4 +384,31 @@
 }
 .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
   background: #005c8dc2  !important;
+}
+
+.ant-card-meta {
+  display: flex;
+  align-items: center;
+}
+
+.ant-card-body {
+  padding: 12px;
+}
+
+.ant-card-meta-title {
+  color: #111;
+  margin: 0 !important;
+}
+
+.ant-card-meta-description {
+  color: #237fcd;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.ant-card:hover {
+  border-color: #237fcd;
+  box-shadow: 0 0 5px #237ecd80;
+  border-radius: 8px;
+  cursor: pointer;
 }

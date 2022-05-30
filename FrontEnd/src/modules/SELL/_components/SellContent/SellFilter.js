@@ -1,29 +1,83 @@
-import { Dropdown, Input, Menu, Typography } from 'antd';
-import React from 'react';
-const { Text } = Typography;
+import React, { useState } from 'react';
+import { Select, Button } from 'antd';
+import { findGuest } from '../../_api';
+import { PlusOutlined } from '@ant-design/icons'
+
+let timeout;
+let currentValue;
+const fetch = (value, callback) => {
+  if (timeout) {
+    clearTimeout(timeout);
+    timeout = null;
+  }
+
+  currentValue = value;
+
+  const fake = () => {
+    findGuest(value)
+      .then((res) => {
+        if (currentValue === value) {
+          const { arrayFind } = res.data;
+          console.log(arrayFind)
+          const data = arrayFind.map((item) => ({
+            value: item.codeGust,
+            text: `${item.codeGust} - ${item.nameGust} - ${item.phoneGust}`,
+          }));
+          callback(data);
+        }
+      });
+  };
+
+  timeout = setTimeout(fake, 300);
+};
 
 const SellFilter = () => {
-  const menuUser = (
-    <Menu>
-      <Menu.Item key="Vietnamese">Đăng xuất</Menu.Item>
-    </Menu>
-  );
+  const [data, setData] = useState([]);
+  const [value, setValue] = useState();
+
+  const handleSearch = (newValue) => {
+    if (newValue) {
+      fetch(newValue, setData);
+    } else {
+      setData([]);
+    }
+  };
+
+  const handleChange = (newValue) => {
+    setValue(newValue);
+  };
+
+
+  const { Option } = Select;
+  const options = data.map((d) => <Option key={d.value}>{d.text}</Option>);
+
   return (
-    <div className="d-flex  justify-content-between ">
-      <Dropdown
-        overlay={menuUser}
-        trigger={['click']}
-        onClick={(e) => e.preventDefault()}
+    <div className="d-flex-center ">
+      <Select
+        showSearch
+        value={value}
+        placeholder="Tìm khách hàng"
+        style={{ width: 400, }}
+        defaultActiveFirstOption={false}
+        showArrow={false}
+        filterOption={false}
+        onSearch={handleSearch}
+        onChange={handleChange}
+        notFoundContent={null}
+        size="large"
+        allowClear={true}
       >
-        <div className="cusor-pointer d-flex align-items-center">
-          <i className="icon-user-circle-o pr-1"></i>
-          <Text strong>
-            {/* {authInfo && !isEmpty(authInfo) ? authInfo : 'Update'} */}
-            Phạm Văn Nam
-          </Text>
-        </div>
-      </Dropdown>
-      <Input style={{ width: 300 }} placeholder="Tìm kiếm..." />
+        {options}
+      </Select>
+      <Button
+        // onClick={() => handleClickAdd()}
+        className="font-weight-bold "
+        type="primary"
+        icon={<PlusOutlined />}
+        style={{ borderRadius: '8px', marginLeft: '24px' }}
+      >
+        Khách Hàng
+      </Button>
     </div>
   );
 };

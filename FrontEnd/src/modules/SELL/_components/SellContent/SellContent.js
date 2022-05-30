@@ -1,23 +1,34 @@
-import { EditOutlined } from '@ant-design/icons';
-import { Input } from 'antd';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import SellFilter from './SellFilter';
 import SellForm from './SellForm';
+import SellList from './SellList';
+import { useSelector } from 'react-redux';
+import { formatPriceVND } from '../../../../helpers/funcs';
 
 const SellContent = () => {
+  const [sum, setSum] = useState(0)
+  const productsBuying = useSelector(state => state.sell.productsBuying)
+  
+  useEffect(() => {
+    let initSum = 0
+    if (productsBuying.length != 0) {
+      productsBuying.map((value) => {
+        initSum = initSum + ( value.amout * value.priceSell )
+        setSum(initSum)
+      })
+    } else {
+      setSum(initSum)
+    }
+  }, [productsBuying])
+
   return (
     <div className="display-flex content">
       <div className="content__left">
-        <div className="content__left__list">ádsadas</div>
-        <div className="content__left__sum d-flex-center justify-content-between">
-          <Input
-            prefix={<EditOutlined />}
-            style={{ width: 300 }}
-            placeholder="Ghi chú đơn hàng"
-          />
+        <SellList />
+        <div className="content__left__sum d-flex-center justify-content-end">
           <span className="font-weight-bold ">
             Tổng tiền hàng:{' '}
-            <span className="content__left__sum__price">2.000.000 VND</span>
+            <span className="content__left__sum__price">{formatPriceVND(sum)}</span>
           </span>
         </div>
       </div>

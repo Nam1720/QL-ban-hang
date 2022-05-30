@@ -1,102 +1,71 @@
-import { DeleteOutlined, SaveOutlined, StopOutlined } from '@ant-design/icons';
-import { Button, Col, Form, Input, InputNumber, Space } from 'antd';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { Card, Avatar } from 'antd';
+import { getProduct } from '../../_api';
+import { openNotificationWithIcon, formatPriceVND } from '../../../../helpers/funcs';
+import { useSelector, useDispatch } from 'react-redux';
+import { setProductsBuying } from '../../_store/sellSlice';
 
 const SellForm = () => {
-  const [form] = Form.useForm();
+  const dispatch = useDispatch()
+  const productsBuying = useSelector(state => state.sell.productsBuying)
+  const { Meta } = Card
+  const [data, setData] = useState([])
 
-  const layout = {
-    labelCol: { span: 6 },
-    wrapperCol: { span: 18 },
-  };
-  const tailLayout = {
-    wrapperCol: { offset: 8, span: 16 },
-  };
+  useEffect(() => {
+    getProduct()
+      .then(res => {
+        if (res.data.success) {
+          setData(res.data.GoodList)
+        } else {
+          openNotificationWithIcon('error', res.data.message)
+        }
+      })
+      .catch(() => openNotificationWithIcon('error', 'Có lỗi xảy ra, xin vui lòng thử lại !'))
+  }, [])
 
-  const onReset = () => {
-    form.resetFields();
-  };
+  const handleClickProduct = (value) => {
+    let newArray = new Array 
+
+    let obj = productsBuying.find(o => o.codeProduct === value.codeProduct);
+
+    if (obj !== undefined) {
+      productsBuying.map((o) => {
+        if (o.codeProduct === value.codeProduct) {
+          newArray.push({ ...o, amout: o.amout + 1 })
+          dispatch(setProductsBuying([...newArray]))
+        } else {
+          newArray.push(o)
+          dispatch(setProductsBuying([...newArray]))
+        }
+      })
+    } else {
+      dispatch(setProductsBuying([...productsBuying, { ...value, amout: 1 }]))
+    }
+
+
+  }
 
   return (
-    <>
-      <Form {...layout} form={form} name="control-hooks" onFinish={onFinish}>
-        <Col>
-          <Form.Item
-            name="productName"
-            label="Tên sản phẩm"
-            rules={[{ required: true, message: 'Tên sản phẩm bắt buộc' }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="priceCapital"
-            label="Giá nhập"
-            rules={[{ required: true, message: 'Giá nhập bắt buộc' }]}
-          >
-            <InputNumber
-              formatter={(value) =>
-                `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-              }
-            />
-          </Form.Item>
-          <Form.Item
-            name="priceSell"
-            label="Giá bán"
-            rules={[{ required: true, message: 'Giá bán bắt buộc' }]}
-          >
-            <Input type="number" />
-          </Form.Item>
-          <Form.Item
-            name="inventory"
-            label="Số lượng"
-            rules={[{ required: true, message: 'Số lượng sản phẩm bắt buộc' }]}
-          >
-            <Input type="number" />
-          </Form.Item>
-        </Col>
+    <div className='d-flex flex-wrap' style={{ marginTop: '30px' }}>
+      {data.map((value, index) => (
+        <Card
+          key={index}
+          style={{
+            width: '31%',
+            margin: '12px 12px 0 0',
+            cursor: 'pointer'
+          }}
 
-        <Form.Item {...tailLayout}>
-          <Space
-            size="middle"
-            className="d-flex"
-            style={{ flexDirection: 'row-reverse' }}
-          >
-            <Button
-              onClick={() => handelcancel()}
-              className="font-weight-bold"
-              style={{ padding: '0 32px' }}
-              icon={<StopOutlined />}
-            >
-              Hủy
-            </Button>
-
-            <Button
-              htmlType="button"
-              onClick={onReset}
-              icon={<DeleteOutlined />}
-            >
-              Reset
-            </Button>
-            <Button
-              className="font-weight-bold"
-              style={{
-                background: '#4bac4d',
-                border: 'none',
-                padding: '0 32px',
-              }}
-              htmlType="submit"
-              type="primary"
-              icon={<SaveOutlined />}
-            >
-              Thêm
-            </Button>
-          </Space>
-        </Form.Item>
-      </Form>
-      <Button className="btn-check-out" type="primary">
-        Thanh toán
-      </Button>
-    </>
+          onClick={() => handleClickProduct(value)}
+        >
+          <Meta
+            avatar={<Avatar src={value.filePath} />}
+            title={value.productName}
+            description={formatPriceVND(value.priceSell)}
+          />
+        </Card>
+      ))}
+    </div>
   );
 };
 

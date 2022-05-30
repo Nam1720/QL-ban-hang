@@ -24,14 +24,14 @@ const Header = () => {
   const dispatch = useDispatch();
   const changeLanguage = (key) => {
     switch (key) {
-      case 'vi':
-        setLanguage('Vietnamese');
-        i18n.changeLanguage(key);
-        break;
-      case 'en':
-        setLanguage('English');
-        i18n.changeLanguage(key);
-        break;
+    case 'vi':
+      setLanguage('Vietnamese');
+      i18n.changeLanguage(key);
+      break;
+    case 'en':
+      setLanguage('English');
+      i18n.changeLanguage(key);
+      break;
     }
   };
   const menu = (

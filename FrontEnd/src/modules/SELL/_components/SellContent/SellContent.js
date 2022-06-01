@@ -6,20 +6,20 @@ import { useSelector } from 'react-redux';
 import { formatPriceVND } from '../../../../helpers/funcs';
 
 const SellContent = () => {
-  const [sum, setSum] = useState(0)
-  const productsBuying = useSelector(state => state.sell.productsBuying)
-  
+  const [sum, setSum] = useState(0);
+  const productsBuying = useSelector((state) => state.sell.productsBuying);
+
   useEffect(() => {
-    let initSum = 0
+    let initSum = 0;
     if (productsBuying.length != 0) {
       productsBuying.map((value) => {
-        initSum = initSum + ( value.amout * value.priceSell )
-        setSum(initSum)
-      })
+        initSum = initSum + value.amout * value.priceSell;
+        setSum(initSum);
+      });
     } else {
-      setSum(initSum)
+      setSum(initSum);
     }
-  }, [productsBuying])
+  }, [productsBuying]);
 
   return (
     <div className="display-flex content">
@@ -28,7 +28,9 @@ const SellContent = () => {
         <div className="content__left__sum d-flex-center justify-content-end">
           <span className="font-weight-bold ">
             Tổng tiền hàng:{' '}
-            <span className="content__left__sum__price">{formatPriceVND(sum)}</span>
+            <span className="content__left__sum__price">
+              {formatPriceVND(sum)}
+            </span>
           </span>
         </div>
       </div>

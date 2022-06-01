@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Select, Button } from 'antd';
+import { Select } from 'antd';
 import { findGuest } from '../../_api';
-import { PlusOutlined } from '@ant-design/icons'
+import SellDrawer from './SellDrawer';
 
 let timeout;
 let currentValue;
@@ -14,18 +14,17 @@ const fetch = (value, callback) => {
   currentValue = value;
 
   const fake = () => {
-    findGuest(value)
-      .then((res) => {
-        if (currentValue === value) {
-          const { arrayFind } = res.data;
-          console.log(arrayFind)
-          const data = arrayFind.map((item) => ({
-            value: item.codeGust,
-            text: `${item.codeGust} - ${item.nameGust} - ${item.phoneGust}`,
-          }));
-          callback(data);
-        }
-      });
+    findGuest(value).then((res) => {
+      if (currentValue === value) {
+        const { arrayFind } = res.data;
+        console.log(arrayFind);
+        const data = arrayFind.map((item) => ({
+          value: item.codeGust,
+          text: `${item.codeGust} - ${item.nameGust} - ${item.phoneGust}`,
+        }));
+        callback(data);
+      }
+    });
   };
 
   timeout = setTimeout(fake, 300);
@@ -47,7 +46,6 @@ const SellFilter = () => {
     setValue(newValue);
   };
 
-
   const { Option } = Select;
   const options = data.map((d) => <Option key={d.value}>{d.text}</Option>);
 
@@ -57,7 +55,7 @@ const SellFilter = () => {
         showSearch
         value={value}
         placeholder="Tìm khách hàng"
-        style={{ width: 400, }}
+        style={{ width: 400 }}
         defaultActiveFirstOption={false}
         showArrow={false}
         filterOption={false}
@@ -69,15 +67,7 @@ const SellFilter = () => {
       >
         {options}
       </Select>
-      <Button
-        // onClick={() => handleClickAdd()}
-        className="font-weight-bold "
-        type="primary"
-        icon={<PlusOutlined />}
-        style={{ borderRadius: '8px', marginLeft: '24px' }}
-      >
-        Khách Hàng
-      </Button>
+      <SellDrawer />
     </div>
   );
 };

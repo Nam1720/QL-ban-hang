@@ -1,10 +1,34 @@
 import React, { useState } from 'react';
-import { Drawer, Form, Button, Col, Row, Input, Select, Space } from 'antd';
+import { Drawer, Button, Col, Row, Input, Select, Space, Form } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import { useDispatch } from 'react-redux';
+import { addGuest } from '../../_api';
+import { openNotificationWithIcon } from '../../../../helpers/funcs';
+import { addListGust } from '../../../Guest/_store/guestSlice';
 const { Option } = Select;
 
 const SellDrawer = () => {
   const [visible, setVisible] = useState(false);
+
+  const dispatch = useDispatch();
+  const [form] = Form.useForm();
+
+  const [nameGust, setNameGust] = useState('');
+  const [phone, setPhone] = useState('');
+  const [address, setAddress] = useState('');
+
+  const onFinish = async () => {
+    const values = await form.validateFields();
+
+    addGuest({ ...values }).then((res) => {
+      if (res.data.success) {
+        openNotificationWithIcon('success', res.data.message);
+        dispatch(addListGust([...addListGust, res.data.newGust]));
+      } else {
+        openNotificationWithIcon('error', res.data.message);
+      }
+    });
+  };
 
   const showDrawer = () => {
     setVisible(true);
@@ -14,9 +38,6 @@ const SellDrawer = () => {
     setVisible(false);
   };
 
-  const onFinish = (values) => {
-    console.log(values);
-  };
   return (
     <>
       <Button
@@ -38,13 +59,13 @@ const SellDrawer = () => {
         extra={
           <Space>
             <Button onClick={onClose}>Hủy</Button>
-            <Button onClick={onFinish} type="primary">
+            <Button onClick={() => onFinish()} type="primary">
               Thêm
             </Button>
           </Space>
         }
       >
-        <Form layout="vertical" onFinish={onFinish} hideRequiredMark>
+        <Form layout="vertical" onFinish={() => onFinish()} hideRequiredMark>
           <Row gutter={16}>
             <Col span={12}>
               <Form.Item
@@ -57,7 +78,11 @@ const SellDrawer = () => {
                   },
                 ]}
               >
-                <Input placeholder="Tên khách hàng" />
+                <Input
+                  value={nameGust}
+                  onChange={(e) => setNameGust(e.target.value)}
+                  placeholder="Tên khách hàng"
+                />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -74,7 +99,11 @@ const SellDrawer = () => {
                   },
                 ]}
               >
-                <Input placeholder="Số điện thoại" />
+                <Input
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  placeholder="Số điện thoại"
+                />
               </Form.Item>
             </Col>
           </Row>
@@ -107,7 +136,11 @@ const SellDrawer = () => {
                   },
                 ]}
               >
-                <Input placeholder="Địa chỉ" />
+                <Input
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                  placeholder="Địa chỉ"
+                />
               </Form.Item>
             </Col>
           </Row>

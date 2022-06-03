@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit';
 
 const sellSlice = createSlice({
   name: 'sell',
@@ -8,16 +8,15 @@ const sellSlice = createSlice({
       nameGuest: '',
       addressGuest: '',
       phoneGuest: '',
-    }
-
+    },
   },
   reducers: {
     setProductsBuying(state, action) {
-      state.productsBuying = action.payload
+      state.productsBuying = action.payload;
     },
-  }
-})
+  },
+});
 
-export const { setProductsBuying } = sellSlice.actions
+export const { setProductsBuying } = sellSlice.actions;
 
-export default sellSlice.reducer
+export default sellSlice.reducer;

@@ -6,7 +6,7 @@ import { DownOutlined } from '@ant-design/icons';
 import { destroyLogged, getAuth } from 'utils/jwt';
 import useRouter from 'hooks/useRouter';
 import useCurrentWidth from 'hooks/useCurrentWidth';
-import Logo from 'src/assets/images/logo-masothue.png';
+import Logo from 'src/assets/images/logo2.png';
 import { useTranslation } from 'react-i18next';
 import { isEmpty } from 'helpers/funcs';
 import { saveAuth } from 'utils/jwt';
@@ -24,14 +24,14 @@ const Header = () => {
   const dispatch = useDispatch();
   const changeLanguage = (key) => {
     switch (key) {
-    case 'vi':
-      setLanguage('Vietnamese');
-      i18n.changeLanguage(key);
-      break;
-    case 'en':
-      setLanguage('English');
-      i18n.changeLanguage(key);
-      break;
+      case 'vi':
+        setLanguage('Vietnamese');
+        i18n.changeLanguage(key);
+        break;
+      case 'en':
+        setLanguage('English');
+        i18n.changeLanguage(key);
+        break;
     }
   };
   const menu = (

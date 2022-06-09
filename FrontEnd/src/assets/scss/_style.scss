@@ -24,11 +24,12 @@
     width: 100%;
     text-align: right;
     padding: 0 30px;
-    background: #041D2B !important;
+    background: #fff !important;
+
     border-bottom: 1px solid $white;
     box-sizing: border-box;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.06);
-    color: $white;
+    color: $black;
     i {
       font-size: 24px;
     }
@@ -49,7 +50,7 @@
       margin-right: 20px;
     }
     span {
-    color: $white;
+    color: $black;
 
     }
   }

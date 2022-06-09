@@ -1,10 +1,10 @@
-import React , {useState} from 'react';
+import React, { useState } from 'react';
 import { Form, Checkbox, Input, Button } from 'antd';
 import { useDispatch } from 'react-redux';
-import {setLoginStatus } from 'auth/_store/authSlice';
+import { setLoginStatus } from 'auth/_store/authSlice';
 import useRouter from 'hooks/useRouter';
 import { saveAuth, saveToken } from 'utils/jwt';
-import Logo from 'assets/images/logo-masothue.png';
+import Logo from 'assets/images/logo2.png';
 import { VALIDATE_MESSAGES } from 'modules/Commons/_store/constants';
 import { login } from '../_api';
 
@@ -19,41 +19,43 @@ import { openNotificationWithIcon } from 'helpers/funcs';
 const Login = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   // const [messageLoginErr, setMessageErr] = useState('');
   const [form] = Form.useForm();
 
   const onSubmitLogin = (values) => {
-    const {email, password} =  values;
-    setLoading(true)
-    login(email,password).then(res => {
-      if (res.data.success) {
-        saveToken(res.data.accessToken)
-        saveAuth(res.data.username)
-        dispatch(setLoginStatus(true))
-        router.push('/');
-      } else {
-        openNotificationWithIcon('error', res.data.message)
-      }
+    const { email, password } = values;
+    setLoading(true);
+    login(email, password)
+      .then((res) => {
+        if (res.data.success) {
+          saveToken(res.data.accessToken);
+          saveAuth(res.data.username);
+          dispatch(setLoginStatus(true));
+          router.push('/');
+        } else {
+          openNotificationWithIcon('error', res.data.message);
+        }
 
-
-      // if (res && res.data.status === KEY.SUCCESS) {
-      //   console.log(res.data, 'data login')
-      //   const user = res.data.data
-      //   saveToken(user.token);
-      //   getProfile().then(res => {
-      //     if (res && res.data.status === KEY.SUCCESS) {
-      //       const profile = res.data.data;
-      //       console.log(profile,'profile');
-      //       saveAuth(profile);
-      //       dispatch(setLoginStatus(true))
-      //       router.push('/');
-      //     }
-      //   })
-      // }
-    }).catch (error => {
-      openNotificationWithIcon('error', error)
-    }).finally(() => setLoading(false));
+        // if (res && res.data.status === KEY.SUCCESS) {
+        //   console.log(res.data, 'data login')
+        //   const user = res.data.data
+        //   saveToken(user.token);
+        //   getProfile().then(res => {
+        //     if (res && res.data.status === KEY.SUCCESS) {
+        //       const profile = res.data.data;
+        //       console.log(profile,'profile');
+        //       saveAuth(profile);
+        //       dispatch(setLoginStatus(true))
+        //       router.push('/');
+        //     }
+        //   })
+        // }
+      })
+      .catch((error) => {
+        openNotificationWithIcon('error', error);
+      })
+      .finally(() => setLoading(false));
   };
   // const messageErrTpl = () => {
   //   return messageLoginErr ? <Form.Item><div className="ant-form-item-explain ant-form-item-explain-error"><div role="alert">{ messageLoginErr }</div></div></Form.Item> : null;
@@ -72,11 +74,7 @@ const Login = () => {
           validateMessages={VALIDATE_MESSAGES}
           onFinish={(values) => onSubmitLogin(values)}
         >
-          <Form.Item
-            name="email"
-            label="Email"
-            rules={[{ required: true }]}
-          >
+          <Form.Item name="email" label="Email" rules={[{ required: true }]}>
             <Input placeholder="Username" />
           </Form.Item>
           <Form.Item
@@ -98,7 +96,11 @@ const Login = () => {
           </Form.Item>
           {/* { messageErrTpl()} */}
           <Form.Item>
-            <Button loading={loading} htmlType="submit" className="btn btn-blue full-width">
+            <Button
+              loading={loading}
+              htmlType="submit"
+              className="btn btn-blue full-width"
+            >
               Log in
             </Button>
           </Form.Item>

@@ -3,36 +3,35 @@ import { Select } from 'antd';
 import { findGuest } from '../../_api';
 import SellDrawer from './SellDrawer';
 
-let timeout;
-let currentValue;
-const fetch = (value, callback) => {
-  if (timeout) {
-    clearTimeout(timeout);
-    timeout = null;
-  }
-
-  currentValue = value;
-
-  const fake = () => {
-    findGuest(value).then((res) => {
-      if (currentValue === value) {
-        const { arrayFind } = res.data;
-        console.log(arrayFind);
-        const data = arrayFind.map((item) => ({
-          value: item.codeGust,
-          text: `${item.codeGust} - ${item.nameGust} - ${item.phoneGust}`,
-        }));
-        callback(data);
-      }
-    });
-  };
-
-  timeout = setTimeout(fake, 300);
-};
-
 const SellFilter = () => {
   const [data, setData] = useState([]);
   const [value, setValue] = useState();
+
+  let timeout;
+  let currentValue;
+  const fetch = (value, callback) => {
+    if (timeout) {
+      clearTimeout(timeout);
+      timeout = null;
+    }
+
+    currentValue = value;
+
+    const fake = () => {
+      findGuest(value).then((res) => {
+        if (currentValue === value) {
+          const { arrayFind } = res.data;
+          const data = arrayFind.map((item) => ({
+            value: item.codeGust,
+            text: `${item.codeGust} - ${item.nameGust} - ${item.phoneGust}`,
+          }));
+          callback(data);
+        }
+      });
+    };
+
+    timeout = setTimeout(fake, 300);
+  };
 
   const handleSearch = (newValue) => {
     if (newValue) {

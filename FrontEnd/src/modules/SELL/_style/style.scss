@@ -135,12 +135,23 @@ body {
     align-items: center;
 }
 
-button.ant-btn.ant-btn-primary.ant-btn-lg {
+.btn-order {
     position: absolute;
-    width: 97%;
+    right: 0;
+    left: 0;
+    font-size: 24px;
+    height: 50px;
+    margin: 0 8px !important;
     bottom: 8px;
     border-radius: 8px;
 }
 .logo-footer {
-    width: 15%;
+    width: 10%;
+}
+
+.inp-order {
+    border-right: none;
+    border-top: none;
+    border-left: none;
+    width: auto;
 }

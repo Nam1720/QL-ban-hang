@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Avatar, Button } from 'antd';
+import { Card, Avatar } from 'antd';
 import { getProduct } from '../../_api';
 import {
   openNotificationWithIcon,
@@ -7,10 +7,12 @@ import {
 } from '../../../../helpers/funcs';
 import { useSelector, useDispatch } from 'react-redux';
 import { setProductsBuying } from '../../_store/sellSlice';
+import SellDrawerOrder from './sellDrawerOrder';
 
 const SellForm = () => {
   const dispatch = useDispatch();
   const productsBuying = useSelector((state) => state.sell.productsBuying);
+
   const { Meta } = Card;
   const [data, setData] = useState([]);
 
@@ -72,9 +74,17 @@ const SellForm = () => {
           </Card>
         ))}
       </div>
-      <Button type="primary" className="" size={'large'}>
+      {/* <Button
+        type="primary"
+        className=""
+        size={'large'}
+        onClick={() => {
+          setActiveModal(visibleMdal);
+        }}
+      >
         Thanh toán
-      </Button>
+      </Button> */}
+      <SellDrawerOrder />
     </>
   );
 };

@@ -1,6 +1,3 @@
-import { FormProps } from 'antd/lib/form';
-import { TablePaginationConfig } from 'antd/lib/table';
-
 export const KEY_API_FAIL = 'Error';
 export const KEY = {
   SAVE: 'save',
@@ -16,16 +13,12 @@ export const KEY = {
   EN: 'en',
 };
 
-export const DEFAULT_PAGING = { pageIndex: 1, pageSize: 10, totalPage: 1, totalRecords: 12 };
-
-export enum ACTION_CRUD {
-  ADD,
-  EDIT,
-  VIEW,
-  NONE,
-  VIEW_HISTORY,
-  VERIFIED,
-}
+export const DEFAULT_PAGING = {
+  pageIndex: 1,
+  pageSize: 10,
+  totalPage: 1,
+  totalRecords: 12,
+};
 
 const typeTemplate = '${label} không đúng định dạng';
 
@@ -46,22 +39,6 @@ export const validateMessagesForm = {
     url: typeTemplate,
     hex: typeTemplate,
   },
-};
-
-export const formDefaultLayout: FormProps = {
-  colon: false,
-  layout: 'vertical',
-  wrapperCol: { span: 24 },
-  validateMessages: validateMessagesForm,
-  className: 'font-weight-bold',
-};
-
-export const initActionModal = { id: -1, type: ACTION_CRUD.NONE, index: -1 };
-
-export const paginationDefaultProps: TablePaginationConfig = {
-  pageSizeOptions: ['3', '10', '20', '30', '40'],
-  position: ['bottomCenter'],
-  showSizeChanger: true,
 };
 
 export const listMonthName = [

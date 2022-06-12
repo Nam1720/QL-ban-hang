@@ -10,8 +10,11 @@ import {
   formatPriceVND,
   handleTotal,
 } from '../../../helpers/funcs';
+import { useTranslation } from 'react-i18next';
 
 const DashboardOverview = () => {
+  const { t } = useTranslation();
+
   const [count, setCount] = useState(0);
   const [totalRevenue, setTotalRevenue] = useState(0);
   const [totalOld, setTotalOld] = useState(0);
@@ -37,7 +40,7 @@ const DashboardOverview = () => {
 
   return (
     <div className="dashboard__overview">
-      <h3 className="font-weight-bold">KẾT QUẢ BÁN HÀNG HÔM NAY</h3>
+      <h3 className="font-weight-bold">{t('home.resultToday')}</h3>
       <div className="list d-flex-center justify-content-around">
         <div
           className="d-flex-center flex-column"
@@ -51,7 +54,7 @@ const DashboardOverview = () => {
         >
           <ShoppingCartOutlined style={{ fontSize: '40px' }} />
           <p style={{ fontSize: '20px', margin: '0', fontWeight: 'bold' }}>
-            Số hóa đơn: {count}
+            {t('home.someBills')}: {count}
           </p>
         </div>
         <div
@@ -66,7 +69,7 @@ const DashboardOverview = () => {
         >
           <DollarOutlined style={{ fontSize: '40px' }} />
           <p style={{ fontSize: '20px', margin: '0', fontWeight: 'bold' }}>
-            Tổng doanh thu: {formatPriceVND(totalRevenue)}
+            {t('home.revenue')}: {formatPriceVND(totalRevenue)}
           </p>
         </div>
         <div
@@ -81,7 +84,7 @@ const DashboardOverview = () => {
         >
           <SafetyCertificateOutlined style={{ fontSize: '40px' }} />
           <p style={{ fontSize: '20px', margin: '0', fontWeight: 'bold' }}>
-            Lợi nhuận: {formatPriceVND(totalRevenue - totalOld)}
+            {t('home.profit')}: {formatPriceVND(totalRevenue - totalOld)}
           </p>
         </div>
       </div>

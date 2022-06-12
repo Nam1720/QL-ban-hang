@@ -20,8 +20,11 @@ ChartJS.register(
   Tooltip,
   Legend
 );
+import { useTranslation } from 'react-i18next';
 
 const DashboardChart = () => {
+  const { t } = useTranslation();
+
   const [t1, setT1] = useState([0, 0]);
   const [t2, setT2] = useState([0, 0]);
   const [t3, setT3] = useState([0, 0]);
@@ -63,22 +66,22 @@ const DashboardChart = () => {
       <Bar
         data={{
           labels: [
-            'THÁNG 1',
-            'THÁNG 2',
-            'THÁNG 3',
-            'THÁNG 4',
-            'THÁNG 5',
-            'THÁNG 6',
-            'THÁNG 7',
-            'THÁNG 8',
-            'THÁNG 9',
-            'THÁNG 10',
-            'THÁNG 11',
-            'THÁNG 12',
+            `${t('home.month')} ${1}`,
+            `${t('home.month')} ${2}`,
+            `${t('home.month')} ${3}`,
+            `${t('home.month')} ${4}`,
+            `${t('home.month')} ${5}`,
+            `${t('home.month')} ${6}`,
+            `${t('home.month')} ${7}`,
+            `${t('home.month')} ${8}`,
+            `${t('home.month')} ${9}`,
+            `${t('home.month')} ${10}`,
+            `${t('home.month')} ${11}`,
+            `${t('home.month')} ${12}`,
           ],
           datasets: [
             {
-              label: 'Tổng doanh thu (VND)',
+              label: t('home.totalRevenue'),
               backgroundColor: [
                 'rgba(255, 118, 0, 0.7)',
                 'rgba(255, 118, 0, 0.7)',
@@ -109,7 +112,7 @@ const DashboardChart = () => {
               ],
             },
             {
-              label: 'Tổng lợi nhuận (VND)',
+              label: t('home.totalProfit'),
               backgroundColor: [
                 'rgba(1, 145, 180, 0.7)',
                 'rgba(1, 145, 180, 0.7)',

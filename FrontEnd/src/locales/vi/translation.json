@@ -45,5 +45,14 @@
     "showResults": "Hiển thị kết quả",
     "onTotal" : "trên tổng số",
     "survey" : "Khảo sát"
+  },
+  "home":{
+    "resultToday": "KẾT QUẢ BÁN HÀNG HÔM NAY",
+    "someBills": "Số hóa đơn",
+    "revenue": "Doanh thu",
+    "profit": "Lợi nhuận",
+    "totalRevenue": "Tổng doanh thu (VND)",
+    "totalProfit": "Tổng lợi nhuận (VND)",
+    "month": "Tháng"
   }
 }

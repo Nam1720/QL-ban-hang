@@ -45,5 +45,15 @@
     "showResults": "show results",
     "onTotal" : "on total",
     "survey" : "Survey"
+  },
+  "home":{
+    "resultToday": "ADVERTISING SALES TODAY",
+    "someBills": "Some bills",
+    "revenue": "Total revenue",
+    "profit": "Profit",
+    "totalRevenue": "Total revenue (VND)",
+    "totalProfit": "Total profit (VND)",
+    "month": "Month"
+    
   }
 }

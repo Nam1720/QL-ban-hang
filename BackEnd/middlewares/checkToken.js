@@ -69,7 +69,7 @@ exports.checkTokenAll = (req, res, next) => {
             const decoded = jwt.verify(tokenUser, 'userngominhthuan')
             req.userId = decoded.userId
             req.username = decoded.username
-            req.name = decoded.nameUser
+            req.name = decoded.nameStaff
             return next()
         }
 

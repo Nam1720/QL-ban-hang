@@ -1,33 +1,44 @@
 import React, { useState } from 'react';
-import { Drawer, Button, Col, Row, Input, Select, Space, Form } from 'antd';
+import { Drawer, Button, Input, Space, Form, Col, Row } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { useDispatch } from 'react-redux';
 import { addGuest } from '../../_api';
 import { openNotificationWithIcon } from '../../../../helpers/funcs';
-import { addListGust } from '../../../Guest/_store/guestSlice';
-const { Option } = Select;
+import { addListGust } from '../../_store/sellSlice';
+import { SaveOutlined, StopOutlined } from '@ant-design/icons';
 
 const SellDrawer = () => {
   const [visible, setVisible] = useState(false);
-
-  const dispatch = useDispatch();
   const [form] = Form.useForm();
-
+  const dispatch = useDispatch();
   const [nameGust, setNameGust] = useState('');
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
 
-  const onFinish = async () => {
-    const values = await form.validateFields();
+  const handleSubmit = () => {
+    if (nameGust != '') {
+      addGuest(nameGust, phone, address)
+        .then((res) => {
+          if (res.data.success) {
+            dispatch(addListGust(res.data.newGust));
+            onReset();
+            onClose();
+            openNotificationWithIcon('success', res.data.message);
+          } else {
+            openNotificationWithIcon('error', res.data.message);
+          }
+        })
+        .catch((err) => {
+          openNotificationWithIcon('error', err);
+        });
+    }
+  };
 
-    addGuest({ ...values }).then((res) => {
-      if (res.data.success) {
-        openNotificationWithIcon('success', res.data.message);
-        dispatch(addListGust([...addListGust, res.data.newGust]));
-      } else {
-        openNotificationWithIcon('error', res.data.message);
-      }
-    });
+  const onReset = () => {
+    form.resetFields();
+    setNameGust('');
+    setPhone('');
+    setAddress('');
   };
 
   const showDrawer = () => {
@@ -56,39 +67,32 @@ const SellDrawer = () => {
         bodyStyle={{
           paddingBottom: 80,
         }}
-        extra={
-          <Space>
-            <Button onClick={onClose}>Hủy</Button>
-            <Button onClick={() => onFinish()} type="primary">
-              Thêm
-            </Button>
-          </Space>
-        }
       >
-        <Form layout="vertical" onFinish={() => onFinish()} hideRequiredMark>
+        <Form
+          name="basic"
+          initialValues={{ remember: true }}
+          autoComplete="off"
+          form={form}
+          layout="vertical"
+        >
           <Row gutter={16}>
             <Col span={12}>
               <Form.Item
-                name="name"
-                label="Tên"
+                className="font-weight-bold"
+                label="Tên khách hàng"
+                name="nameGust"
                 rules={[
-                  {
-                    required: true,
-                    message: 'Please enter user name',
-                  },
+                  { required: true, message: 'Vui lòng nhập tên khách hàng!' },
                 ]}
               >
-                <Input
-                  value={nameGust}
-                  onChange={(e) => setNameGust(e.target.value)}
-                  placeholder="Tên khách hàng"
-                />
+                <Input onChange={(e) => setNameGust(e.target.value)} />
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item
-                name="phone"
+                className="font-weight-bold"
                 label="Số điện thoại"
+                name="phone"
                 rules={[
                   {
                     required: true,
@@ -100,46 +104,8 @@ const SellDrawer = () => {
                 ]}
               >
                 <Input
-                  value={phone}
+                  type="number"
                   onChange={(e) => setPhone(e.target.value)}
-                  placeholder="Số điện thoại"
-                />
-              </Form.Item>
-            </Col>
-          </Row>
-          <Row gutter={16}>
-            <Col span={12}>
-              <Form.Item
-                name="sex"
-                label="Giới tính"
-                rules={[
-                  {
-                    required: true,
-                    message: 'Please select an owner',
-                  },
-                ]}
-              >
-                <Select placeholder="Giới tính">
-                  <Option value="1">Nam</Option>
-                  <Option value="2">Nữ</Option>
-                </Select>
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                name="adress"
-                label="Địa chỉ"
-                rules={[
-                  {
-                    required: true,
-                    message: 'Please choose the type',
-                  },
-                ]}
-              >
-                <Input
-                  value={address}
-                  onChange={(e) => setAddress(e.target.value)}
-                  placeholder="Địa chỉ"
                 />
               </Form.Item>
             </Col>
@@ -148,19 +114,52 @@ const SellDrawer = () => {
           <Row gutter={16}>
             <Col span={24}>
               <Form.Item
+                className="font-weight-bold"
+                label="Địa chỉ"
+                name="address"
+                rules={[{ required: true, message: 'Vui lòng nhập địa chỉ!' }]}
+              >
+                <Input onChange={(e) => setAddress(e.target.value)} />
+              </Form.Item>
+            </Col>
+            <Col span={24}>
+              <Form.Item
+                className="font-weight-bold"
                 name="description"
                 label="Ghi chú"
-                rules={[
-                  {
-                    required: true,
-                    message: 'please enter url description',
-                  },
-                ]}
               >
                 <Input.TextArea rows={4} placeholder="Ghi chú" />
               </Form.Item>
             </Col>
           </Row>
+          <Space
+            size="middle"
+            className="d-flex"
+            style={{ flexDirection: 'row-reverse' }}
+          >
+            <Button
+              onClick={() => onClose()}
+              className="font-weight-bold"
+              style={{ padding: '0 32px' }}
+              icon={<StopOutlined />}
+            >
+              Hủy
+            </Button>
+            <Button
+              onClick={() => handleSubmit()}
+              className="font-weight-bold"
+              style={{
+                background: '#4bac4d',
+                border: 'none',
+                padding: '0 32px',
+              }}
+              htmlType="submit"
+              type="primary"
+              icon={<SaveOutlined />}
+            >
+              Tạo
+            </Button>
+          </Space>
         </Form>
       </Drawer>
     </>

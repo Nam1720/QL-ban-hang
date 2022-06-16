@@ -6,6 +6,7 @@ const sellSlice = createSlice({
     activeModal: true,
     productsBuying: [],
     customer: '',
+    listGuest: [],
     guest: {
       nameGuest: '',
       addressGuest: '',
@@ -22,10 +23,13 @@ const sellSlice = createSlice({
     setCustomer(state, action) {
       state.customer = action.payload;
     },
+    addListGust(state, action) {
+      state.listGuest = [...state.listGuest, action.payload];
+    },
   },
 });
 
-export const { setProductsBuying, setActiveModal, setCustomer } =
+export const { setProductsBuying, setActiveModal, setCustomer, addListGust } =
   sellSlice.actions;
 
 export default sellSlice.reducer;

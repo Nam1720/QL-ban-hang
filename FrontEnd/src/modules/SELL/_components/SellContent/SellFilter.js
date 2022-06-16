@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { Select } from 'antd';
 import { findGuest } from '../../_api';
 import SellDrawer from './SellDrawer';
+import { setCustomer } from '../../_store/sellSlice';
+import { useDispatch } from 'react-redux';
 
 const SellFilter = () => {
   const [data, setData] = useState([]);
   const [value, setValue] = useState();
-
+  const dispatch = useDispatch();
   let timeout;
   let currentValue;
   const fetch = (value, callback) => {
@@ -26,6 +28,7 @@ const SellFilter = () => {
             text: `${item.codeGust} - ${item.nameGust} - ${item.phoneGust}`,
           }));
           callback(data);
+          dispatch(setCustomer(data));
         }
       });
     };
@@ -46,7 +49,11 @@ const SellFilter = () => {
   };
 
   const { Option } = Select;
-  const options = data.map((d) => <Option key={d.value}>{d.text}</Option>);
+  const options = data.map((d, index) => (
+    <Option value={index + 1} key={d.value}>
+      {d.text}
+    </Option>
+  ));
 
   return (
     <div className="d-flex-center ">

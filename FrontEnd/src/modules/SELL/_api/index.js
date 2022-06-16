@@ -12,9 +12,18 @@ export const getProduct = () => {
   return axios.post('http://localhost:3000/api/good/get-list');
 };
 
-export const addGuest = (payload) => {
-  return axios.post('http://localhost:3000/api/user/login', {
+export const addGuest = (nameGust, phoneGust, addressGust) => {
+  return axios.post('http://localhost:3000/api/gust/create', {
+    tokenAdmin: cookie.get('ustkrohtodev'),
+    nameGust,
+    phoneGust,
+    addressGust,
+  });
+};
+
+export const createInvoice = (payload) => {
+  return axios.post('http://localhost:3000/api/invoice/create', {
     ...payload,
-    tokenUser: cookie.get('ustkrohtodev'),
+    tokenAdmin: cookie.get('ustkrohtodev'),
   });
 };

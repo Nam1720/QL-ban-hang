@@ -1,37 +1,35 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Drawer, Button, Input, Space, Form, Divider } from 'antd';
-import { useDispatch, useSelector } from 'react-redux';
-import { addGuest } from '../../_api';
-import { openNotificationWithIcon } from '../../../../helpers/funcs';
-import { addListGust } from '../../../Guest/_store/guestSlice';
+import { useSelector } from 'react-redux';
+import { formatPrice } from '../../../../helpers/funcs';
 
 const SellDrawerOrder = () => {
   const [visible, setVisible] = useState(false);
+  const [sum, setSum] = useState(0);
   const customer = useSelector((state) => state.sell.customer);
-  console.log('================dfsfs=========', customer.text);
+  const productsBuying = useSelector((state) => state.sell.productsBuying);
+  const [priceRefunds, setPriceRefunds] = useState();
 
-  const dispatch = useDispatch();
-  const [form] = Form.useForm();
+  //get productByIng
+  console.log('customer', customer);
+  console.log('productsBuying', productsBuying);
 
-  //   const [price, setPrice] = useState('');
-
-  const onFinish = async () => {
-    const values = await form.validateFields();
-
-    addGuest({ ...values }).then((res) => {
-      if (res.data.success) {
-        openNotificationWithIcon('success', res.data.message);
-        dispatch(addListGust([...addListGust, res.data.newGust]));
-      } else {
-        openNotificationWithIcon('error', res.data.message);
-      }
-    });
-  };
+  // sum
+  useEffect(() => {
+    let initSum = 0;
+    if (productsBuying.length != 0) {
+      productsBuying.map((value) => {
+        initSum = initSum + value.amout * value.priceSell;
+        setSum(initSum);
+      });
+    } else {
+      setSum(initSum);
+    }
+  }, [productsBuying]);
 
   const showDrawer = () => {
     setVisible(true);
   };
-
   const onClose = () => {
     setVisible(false);
   };
@@ -47,7 +45,7 @@ const SellDrawerOrder = () => {
         Đặt hàng
       </Button>
       <Drawer
-        title={customer}
+        title="Hóa đơn"
         width={500}
         onClose={onClose}
         visible={visible}
@@ -55,32 +53,36 @@ const SellDrawerOrder = () => {
           paddingBottom: 80,
         }}
       >
-        <Form layout="vertical" onFinish={() => onFinish()} hideRequiredMark>
+        <Form layout="vertical" hideRequiredMark>
           <h2>Khách lẻ</h2>
 
           <div className="d-flex-center1 justify-content-between">
             <span className="">Tổng tiền hàng: </span>
-            <span className="font-size-18">200,000 VND </span>
+            <span className="font-size-18">{formatPrice(sum)} VND</span>
           </div>
           <div className="d-flex-center1 justify-content-between">
             <span className=" ">Khách cần trả: </span>
-            <span className="font-size-18">200,000 VND </span>
+            <span className="font-size-18 color-sum-price">
+              {formatPrice(sum)} VND
+            </span>
           </div>
-          <div className="d-flex-center1 justify-content-between">
+          <div className="d-flex-center1 inp-order justify-content-between">
             <span className=" ">Khách thanh toán: </span>
-            <Input className="text-right inp-order font-24 primary-color" />
+            <Input
+              className="text-right  font-24 primary-color"
+              type="number"
+              onChange={(e) => setPriceRefunds(e.target.value)}
+            />
           </div>
           <Divider />
           <div className="d-flex-center1 justify-content-between">
             <span className=" ">Tiền thừa trả lại khách: </span>
-            <span className="font-24">200,000 VND </span>
+            <span className="font-24">
+              {!priceRefunds ? 0 : formatPrice(sum - priceRefunds)} VND
+            </span>
           </div>
           <Space>
-            <Button
-              className="font-24 btn-order"
-              onClick={() => onFinish()}
-              type="primary"
-            >
+            <Button className="font-24 btn-order" type="primary">
               Thanh toán
             </Button>
           </Space>

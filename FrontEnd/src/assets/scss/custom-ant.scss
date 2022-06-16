@@ -405,3 +405,14 @@
   border-radius: 8px;
   cursor: pointer;
 }
+
+// input focus
+.inp-order .ant-input{
+  border-width: 0 0 1px 0;
+  border-style: solid;
+  border-color: #495057;
+}
+.inp-order .ant-input:focus{
+  outline: none !important;
+  box-shadow: none !important;
+}

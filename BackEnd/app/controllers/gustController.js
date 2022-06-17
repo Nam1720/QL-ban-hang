@@ -152,6 +152,27 @@ class gustController {
       });
     }
   }
+
+  // [POST] /api/guest/findOne
+  async findOne(req, res) {
+    const { find } = req.body;
+
+    try {
+      const guest = await Gusts.findOne({ codeGust: find });
+
+      res.json({
+        success: true,
+        message: "",
+        guest,
+      });
+    } catch (error) {
+      res.json({
+        success: false,
+        message: "Đã lỗi xảy ra, vui lòng thử lại!",
+        error,
+      });
+    }
+  }
 }
 
 module.exports = new gustController();

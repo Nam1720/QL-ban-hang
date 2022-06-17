@@ -1,20 +1,67 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Drawer, Button, Input, Space, Form, Divider } from 'antd';
 import { useSelector } from 'react-redux';
-import { formatPrice } from '../../../../helpers/funcs';
+import {
+  formatPrice,
+  openNotificationWithIcon,
+} from '../../../../helpers/funcs';
+import { createInvoice, findCustomer } from '../../_api';
 
 const SellDrawerOrder = () => {
   const [visible, setVisible] = useState(false);
   const [sum, setSum] = useState(0);
+  const [newCustomer, setNewCustomer] = useState('');
   const customer = useSelector((state) => state.sell.customer);
   const productsBuying = useSelector((state) => state.sell.productsBuying);
   const [priceRefunds, setPriceRefunds] = useState();
 
-  //get productByIng
-  console.log('customer', customer);
-  console.log('productsBuying', productsBuying);
+  const [codeProduct, setCodeProduct] = useState();
+  const [nameProduct, setNameProduct] = useState();
+  const [countProduct, setCountProduct] = useState();
+  const [priceSell, setPriceSell] = useState();
+  const [priceCapital, setPriceCapital] = useState();
 
-  // sum
+  let { nameGust, addressGust, phoneGust } = newCustomer;
+  //get productByIng
+  const checkProductBuyIng = () => {
+    productsBuying.map((item) => {
+      setCodeProduct(item.codeProduct);
+      setNameProduct(item.productName);
+      setCountProduct(item.amout);
+      setPriceSell(item.priceSell);
+      setPriceCapital(item.priceCapital);
+    });
+  };
+  // get customer info
+  const debounceRef = useRef();
+  const handleChangeInput = (value) => {
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+    }
+    debounceRef.current = setTimeout(() => {
+      if (customer !== '') {
+        findCustomer(value)
+          .then((res) => {
+            if (res.data.success) {
+              setNewCustomer(res.data.guest);
+            } else {
+              openNotificationWithIcon('error', res.data.message);
+            }
+          })
+          .catch(() => {
+            openNotificationWithIcon(
+              'error',
+              'Có lỗi xảy ra, xin vui lòng thử lại!'
+            );
+          });
+      }
+    }, 600);
+  };
+  useEffect(() => {
+    handleChangeInput(customer);
+  }, [customer]);
+
+  // get sum
   useEffect(() => {
     let initSum = 0;
     if (productsBuying.length != 0) {
@@ -25,8 +72,41 @@ const SellDrawerOrder = () => {
     } else {
       setSum(initSum);
     }
+    checkProductBuyIng();
   }, [productsBuying]);
 
+  // call api incoice
+
+  const onSubmit = () => {
+    if (!priceRefunds) {
+      return alert('Nhập số tiền khách hàng trả!');
+    } else {
+      createInvoice({
+        nameGuest: nameGust,
+        addressGuest: addressGust,
+        phoneGuest: phoneGust,
+        productsBuying: [
+          {
+            codeProduct,
+            nameProduct,
+            countProduct,
+            priceSell,
+            priceCapital,
+          },
+        ],
+        totalMoney: sum,
+      }).then((res) => {
+        if (res.data.success) {
+          openNotificationWithIcon('success', res.data.message);
+          onClose();
+        } else {
+          openNotificationWithIcon('error', res.data.message);
+        }
+      });
+    }
+  };
+
+  // event
   const showDrawer = () => {
     setVisible(true);
   };
@@ -72,6 +152,7 @@ const SellDrawerOrder = () => {
               className="text-right  font-24 primary-color"
               type="number"
               onChange={(e) => setPriceRefunds(e.target.value)}
+              rules={[{ required: true, message: 'Tên sản phẩm bắt buộc' }]}
             />
           </div>
           <Divider />
@@ -82,7 +163,11 @@ const SellDrawerOrder = () => {
             </span>
           </div>
           <Space>
-            <Button className="font-24 btn-order" type="primary">
+            <Button
+              className="font-24 btn-order"
+              type="primary"
+              onClick={onSubmit}
+            >
               Thanh toán
             </Button>
           </Space>

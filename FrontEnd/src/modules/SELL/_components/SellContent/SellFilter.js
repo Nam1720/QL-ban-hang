@@ -28,7 +28,6 @@ const SellFilter = () => {
             text: `${item.codeGust} - ${item.nameGust} - ${item.phoneGust}`,
           }));
           callback(data);
-          dispatch(setCustomer(data));
         }
       });
     };
@@ -46,14 +45,11 @@ const SellFilter = () => {
 
   const handleChange = (newValue) => {
     setValue(newValue);
+    dispatch(setCustomer(newValue));
   };
 
   const { Option } = Select;
-  const options = data.map((d, index) => (
-    <Option value={index + 1} key={d.value}>
-      {d.text}
-    </Option>
-  ));
+  const options = data.map((d) => <Option key={d.value}>{d.text}</Option>);
 
   return (
     <div className="d-flex-center ">

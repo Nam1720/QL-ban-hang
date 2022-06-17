@@ -21,9 +21,19 @@ export const addGuest = (nameGust, phoneGust, addressGust) => {
   });
 };
 
+// api find customer
+export const findCustomer = (find) => {
+  return axios.post('http://localhost:3000/api/gust/findOne', {
+    find,
+    tokenAdmin: cookie.get('ustkrohtodev'),
+  });
+};
+
+// api invoice
 export const createInvoice = (payload) => {
   return axios.post('http://localhost:3000/api/invoice/create', {
     ...payload,
     tokenAdmin: cookie.get('ustkrohtodev'),
+    paymentType: 'Tiền mặt',
   });
 };

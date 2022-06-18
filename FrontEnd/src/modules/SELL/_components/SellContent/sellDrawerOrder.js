@@ -21,6 +21,8 @@ const SellDrawerOrder = () => {
   const [priceSell, setPriceSell] = useState();
   const [priceCapital, setPriceCapital] = useState();
 
+  console.log('product', productsBuying);
+
   let { nameGust, addressGust, phoneGust } = newCustomer;
   //get productByIng
   const checkProductBuyIng = () => {
@@ -108,8 +110,13 @@ const SellDrawerOrder = () => {
 
   // event
   const showDrawer = () => {
-    setVisible(true);
+    if (productsBuying.length == 0 || customer == '') {
+      return alert('Vui lòng chọn sản phẩm hoặc khách hàng');
+    } else {
+      return setVisible(true);
+    }
   };
+
   const onClose = () => {
     setVisible(false);
   };
@@ -125,7 +132,7 @@ const SellDrawerOrder = () => {
         Đặt hàng
       </Button>
       <Drawer
-        title="Hóa đơn"
+        title="Hóa đơn thanh toán"
         width={500}
         onClose={onClose}
         visible={visible}
@@ -134,7 +141,10 @@ const SellDrawerOrder = () => {
         }}
       >
         <Form layout="vertical" hideRequiredMark>
-          <h2>Khách lẻ</h2>
+          <div className="d-flex-center1 justify-content-between">
+            <h2 className="">Khách hàng: </h2>
+            <h2>{nameGust}</h2>
+          </div>
 
           <div className="d-flex-center1 justify-content-between">
             <span className="">Tổng tiền hàng: </span>

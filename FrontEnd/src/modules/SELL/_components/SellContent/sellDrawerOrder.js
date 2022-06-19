@@ -21,8 +21,6 @@ const SellDrawerOrder = () => {
   const [priceSell, setPriceSell] = useState();
   const [priceCapital, setPriceCapital] = useState();
 
-  console.log('product', productsBuying);
-
   let { nameGust, addressGust, phoneGust } = newCustomer;
   //get productByIng
   const checkProductBuyIng = () => {
@@ -169,7 +167,7 @@ const SellDrawerOrder = () => {
           <div className="d-flex-center1 justify-content-between">
             <span className=" ">Tiền thừa trả lại khách: </span>
             <span className="font-24">
-              {!priceRefunds ? 0 : formatPrice(sum - priceRefunds)} VND
+              {!priceRefunds ? 0 : formatPrice(priceRefunds - sum)} VND
             </span>
           </div>
           <Space>

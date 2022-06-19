@@ -40,7 +40,7 @@ const SellForm = () => {
 
     if (obj !== undefined) {
       productsBuying.map((o) => {
-        if (o.codeProduct === value.codeProduct) {
+        if (o.codeProduct === value.codeProduct && o.inventory > o.amout) {
           newArray.push({ ...o, amout: o.amout + 1 });
           dispatch(setProductsBuying([...newArray]));
         } else {

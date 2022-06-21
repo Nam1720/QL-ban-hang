@@ -1,10 +1,11 @@
 import HttpService from 'utils/http'
 import axios from 'axios';
 
-export const login = (username, password) => {
+export const login = (username, password, type) => {
   return axios.post('http://localhost:3000/api/admin/login', {
     username,
-    password
+    password,
+    type
   })
 }
 

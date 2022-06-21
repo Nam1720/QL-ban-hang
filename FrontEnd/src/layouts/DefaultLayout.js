@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { Layout } from 'antd';
-import { isLogin } from 'utils/jwt';
+import { isLogin, verifyToken } from 'utils/jwt';
 import Loadable from 'react-loadable';
 import useRouter from 'hooks/useRouter';
 import routes from 'src/routes';
@@ -30,6 +30,19 @@ const DefaultLayout = () => {
     router.push('/login');
     return false;
   }
+
+  // if (verifyToken()) {
+  //   console.log('first')
+  //   router.push('/sell');
+  //   return false;
+  // }
+
+  verifyToken(boolean => {
+    if (boolean) {
+      router.push('/sell');
+      return false;
+    }
+  })
 
   return (
     <Layout className="site-layout" style={{ minHeight: '100vh' }}>

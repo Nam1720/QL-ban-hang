@@ -83,6 +83,32 @@ exports.checkTokenAll = (req, res, next) => {
             message: 'Token không chính xác!'
         })
     }
+}
 
+exports.verifyToken = (req, res) => {
+    const { tokenAdmin } = req.body
 
+    try {
+        // const decodedAdmin = jwt.verify(tokenAdmin, 'adminngominhthuan')
+        const decodedUser = jwt.verify(tokenAdmin, 'userngominhthuan')
+
+        // if (decodedAdmin) {
+            return res.status(200).json({
+                success: true,
+                message: 'Token chính xác!',
+                type: 'User'
+            })
+        // } else if (decodedUser) {
+        //     return res.status(200).json({
+        //         success: true,
+        //         message: 'Token chính xác!',
+        //         type: 'User'
+        //     })
+        // }
+    } catch (error) {
+        return res.status(200).json({
+            success: false,
+            message: 'Token không chính xác!'
+        })
+    }
 }

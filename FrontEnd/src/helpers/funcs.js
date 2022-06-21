@@ -160,7 +160,7 @@ export const handleTotal = (arrayFind) => {
 
     invoice.productsBuying.map((good) => {
       totalOld =
-        totalOld + Number(good.countProduct) * Number(good.priceCapital);
+        totalOld + Number(good.amout) * Number(good.priceCapital);
     });
   });
 

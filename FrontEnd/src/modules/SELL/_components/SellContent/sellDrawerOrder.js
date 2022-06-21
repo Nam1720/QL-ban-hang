@@ -15,23 +15,23 @@ const SellDrawerOrder = () => {
   const productsBuying = useSelector((state) => state.sell.productsBuying);
   const [priceRefunds, setPriceRefunds] = useState();
 
-  const [codeProduct, setCodeProduct] = useState();
-  const [nameProduct, setNameProduct] = useState();
-  const [countProduct, setCountProduct] = useState();
-  const [priceSell, setPriceSell] = useState();
-  const [priceCapital, setPriceCapital] = useState();
+  // const [codeProduct, setCodeProduct] = useState();
+  // const [nameProduct, setNameProduct] = useState();
+  // const [countProduct, setCountProduct] = useState();
+  // const [priceSell, setPriceSell] = useState();
+  // const [priceCapital, setPriceCapital] = useState();
 
   let { nameGust, addressGust, phoneGust } = newCustomer;
   //get productByIng
-  const checkProductBuyIng = () => {
-    productsBuying.map((item) => {
-      setCodeProduct(item.codeProduct);
-      setNameProduct(item.productName);
-      setCountProduct(item.amout);
-      setPriceSell(item.priceSell);
-      setPriceCapital(item.priceCapital);
-    });
-  };
+  // const checkProductBuyIng = () => {
+  //   productsBuying.map((item) => {
+  //     setCodeProduct(item.codeProduct);
+  //     setNameProduct(item.productName);
+  //     setCountProduct(item.amout);
+  //     setPriceSell(item.priceSell);
+  //     setPriceCapital(item.priceCapital);
+  //   });
+  // };
   // get customer info
   const debounceRef = useRef();
   const handleChangeInput = (value) => {
@@ -72,7 +72,7 @@ const SellDrawerOrder = () => {
     } else {
       setSum(initSum);
     }
-    checkProductBuyIng();
+    // checkProductBuyIng();
   }, [productsBuying]);
 
   // call api incoice
@@ -85,15 +85,7 @@ const SellDrawerOrder = () => {
         nameGuest: nameGust,
         addressGuest: addressGust,
         phoneGuest: phoneGust,
-        productsBuying: [
-          {
-            codeProduct,
-            nameProduct,
-            countProduct,
-            priceSell,
-            priceCapital,
-          },
-        ],
+        productsBuying: productsBuying,
         totalMoney: sum,
       }).then((res) => {
         if (res.data.success) {

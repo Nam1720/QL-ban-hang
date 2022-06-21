@@ -21,20 +21,37 @@ class invoiceController {
             })
             await newInvoice.save()
 
-            productsBuying.map((good) => {
-                Goods.findOne({ codeProduct: good.codeProduct })
-                    .then(sanpham => {
-                        Goods.updateOne({ codeProduct: good.codeProduct }, { inventory: Number(sanpham.inventory) - good.countProduct })
-                            .then(() => { })
-                            .catch(err => {
-                                res.status(200).json({
-                                    success: false,
-                                    message: `Không cập nhật lại được số lượng của ${good.codeProduct}. Vui lòng báo lại quản lý!`,
-                                    err
-                                })
-                            })
-                    })
-                    .catch()
+            // productsBuying.map((good) => {
+            //     Goods.findOne({ codeProduct: good.codeProduct })
+            //         .then(sanpham => {
+            //             Goods.updateOne({ codeProduct: good.codeProduct }, { inventory: Number(sanpham.inventory) - good.countProduct })
+            //                 .then(() => { })
+            //                 .catch(err => {
+            //                     res.status(200).json({
+            //                         success: false,
+            //                         message: `Không cập nhật lại được số lượng của ${good.codeProduct}. Vui lòng báo lại quản lý!`,
+            //                         err
+            //                     })
+            //                 })
+            //         })
+            //         .catch()
+            // })
+
+            await productsBuying.map(async (good) => {
+                // try {
+                //     console.log(good)
+                //     const sanpham = await Goods.findOne({ codeProduct: good.codeProduct })
+                //     await Goods.updateOne({ codeProduct: good.codeProduct }, { inventory: Number(sanpham.inventory) - good.countProduct })
+                // } catch (error) {
+                //     res.json({
+                //         success: false,
+                //         message: `Không cập nhật lại được số lượng của ${good.codeProduct}. Vui lòng báo lại quản lý!`,
+                //         error
+                //     })
+                // }
+
+                const sanpham = await Goods.findOne({ codeProduct: good.codeProduct })
+                await Goods.updateOne({ codeProduct: good.codeProduct }, { inventory: Number(sanpham.inventory) - good.amout })
             })
 
             return res.status(200).json({

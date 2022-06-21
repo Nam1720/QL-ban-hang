@@ -29,7 +29,12 @@ const sellSlice = createSlice({
   },
 });
 
-export const { setProductsBuying, setActiveModal, setCustomer, addListGust } =
-  sellSlice.actions;
+export const {
+  setProductsBuying,
+  setActiveModal,
+  setCustomer,
+  addListGust,
+  setValueSelect,
+} = sellSlice.actions;
 
 export default sellSlice.reducer;

@@ -45,7 +45,9 @@ const SellFilter = () => {
 
   const handleChange = (newValue) => {
     setValue(newValue);
-    dispatch(setCustomer(newValue));
+    if (newValue) {
+      dispatch(setCustomer(newValue));
+    }
   };
 
   const { Option } = Select;

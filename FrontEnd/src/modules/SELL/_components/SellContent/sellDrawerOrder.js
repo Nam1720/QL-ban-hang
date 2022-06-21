@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Drawer, Button, Input, Space, Form, Divider } from 'antd';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   formatPrice,
   openNotificationWithIcon,
 } from '../../../../helpers/funcs';
 import { createInvoice, findCustomer } from '../../_api';
+import { setProductsBuying } from '../../_store/sellSlice';
 
 const SellDrawerOrder = () => {
   const [visible, setVisible] = useState(false);
@@ -14,25 +15,10 @@ const SellDrawerOrder = () => {
   const customer = useSelector((state) => state.sell.customer);
   const productsBuying = useSelector((state) => state.sell.productsBuying);
   const [priceRefunds, setPriceRefunds] = useState();
-
-  // const [codeProduct, setCodeProduct] = useState();
-  // const [nameProduct, setNameProduct] = useState();
-  // const [countProduct, setCountProduct] = useState();
-  // const [priceSell, setPriceSell] = useState();
-  // const [priceCapital, setPriceCapital] = useState();
+  const dispatch = useDispatch();
 
   let { nameGust, addressGust, phoneGust } = newCustomer;
-  //get productByIng
-  // const checkProductBuyIng = () => {
-  //   productsBuying.map((item) => {
-  //     setCodeProduct(item.codeProduct);
-  //     setNameProduct(item.productName);
-  //     setCountProduct(item.amout);
-  //     setPriceSell(item.priceSell);
-  //     setPriceCapital(item.priceCapital);
-  //   });
-  // };
-  // get customer info
+
   const debounceRef = useRef();
   const handleChangeInput = (value) => {
     if (debounceRef.current) {
@@ -78,30 +64,27 @@ const SellDrawerOrder = () => {
   // call api incoice
 
   const onSubmit = () => {
-    if (!priceRefunds) {
-      return alert('Nhập số tiền khách hàng trả!');
-    } else {
-      createInvoice({
-        nameGuest: nameGust,
-        addressGuest: addressGust,
-        phoneGuest: phoneGust,
-        productsBuying: productsBuying,
-        totalMoney: sum,
-      }).then((res) => {
-        if (res.data.success) {
-          openNotificationWithIcon('success', res.data.message);
-          onClose();
-        } else {
-          openNotificationWithIcon('error', res.data.message);
-        }
-      });
-    }
+    createInvoice({
+      nameGuest: nameGust,
+      addressGuest: addressGust,
+      phoneGuest: phoneGust,
+      productsBuying: productsBuying,
+      totalMoney: sum,
+    }).then((res) => {
+      if (res.data.success) {
+        openNotificationWithIcon('success', res.data.message);
+        onClose();
+        dispatch(setProductsBuying([]));
+      } else {
+        openNotificationWithIcon('error', res.data.message);
+      }
+    });
   };
 
   // event
   const showDrawer = () => {
     if (productsBuying.length == 0 || customer == '') {
-      return alert('Vui lòng chọn sản phẩm hoặc khách hàng');
+      return openNotificationWithIcon('error', 'Chọn sản phẩm hoặc khách hàng');
     } else {
       return setVisible(true);
     }

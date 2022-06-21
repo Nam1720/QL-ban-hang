@@ -1,12 +1,30 @@
 import React from 'react';
-import { Input, Dropdown, Menu } from 'antd'
-import { SearchOutlined, PieChartOutlined, SettingOutlined, RightCircleOutlined } from '@ant-design/icons'
+import { Input, Dropdown, Menu } from 'antd';
+import {
+  SearchOutlined,
+  PieChartOutlined,
+  SettingOutlined,
+  RightCircleOutlined,
+} from '@ant-design/icons';
+import useRouter from 'hooks/useRouter';
+import { destroyLogged } from 'utils/jwt';
+import { saveAuth } from 'utils/jwt';
 
 const SellHeader = () => {
-  const handleButtonClick = () => {
+  const router = useRouter();
+  const handleButtonClick = () => {};
+
+  const logout = async () => {
+    await destroyLogged();
+    saveAuth(null);
+    // console.log(getAccessToken(), 'TOKEN');
+    router.push('/login');
   };
 
-  const handleMenuClick = () => {
+  const handleMenuClick = (e) => {
+    if (e.key == 3) {
+      logout();
+    }
   };
 
   const menu = (
@@ -33,18 +51,22 @@ const SellHeader = () => {
   );
 
   return (
-    <div className='sell__header d-flex-center justify-content-between'>
-      <div className='sell__header-find'>
-        <Input addonBefore={<SearchOutlined />} addonAfter="" placeholder="Tìm hàng hóa" />
+    <div className="sell__header d-flex-center justify-content-between">
+      <div className="sell__header-find">
+        <Input
+          addonBefore={<SearchOutlined />}
+          addonAfter=""
+          placeholder="Tìm hàng hóa"
+        />
       </div>
 
-      <div className='sell__header-account'>
+      <div className="sell__header-account">
         <Dropdown.Button onClick={handleButtonClick} overlay={menu}>
-                    0399801978
+          0399801978
         </Dropdown.Button>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default SellHeader;

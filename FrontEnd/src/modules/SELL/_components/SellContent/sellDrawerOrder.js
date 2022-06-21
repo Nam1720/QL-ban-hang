@@ -8,6 +8,7 @@ import {
 import { createInvoice, findCustomer } from '../../_api';
 import { useReactToPrint } from 'react-to-print';
 import './SellPrint.scss';
+import { setProductsBuying } from '../../_store/sellSlice';
 
 const SellDrawerOrder = () => {
   const [visible, setVisible] = useState(false);
@@ -23,9 +24,9 @@ const SellDrawerOrder = () => {
   });
 
   const getTime = () => {
-    const date = new Date().toString()
-    return date
-  }
+    const date = new Date().toString();
+    return date;
+  };
   const dispatch = useDispatch();
 
   let { nameGust, addressGust, phoneGust } = newCustomer;
@@ -87,7 +88,7 @@ const SellDrawerOrder = () => {
       }).then((res) => {
         if (res.data.success) {
           openNotificationWithIcon('success', res.data.message);
-          handlePrint()
+          handlePrint();
           dispatch(setProductsBuying([]));
           onClose();
         } else {
@@ -129,7 +130,7 @@ const SellDrawerOrder = () => {
           paddingBottom: 80,
         }}
       >
-        <Form layout="vertical" hideRequiredMark >
+        <Form layout="vertical" hideRequiredMark>
           <div className="d-flex-center1 justify-content-between">
             <h2 className="">Khách hàng: </h2>
             <h2>{nameGust}</h2>
@@ -173,75 +174,113 @@ const SellDrawerOrder = () => {
         </Form>
       </Drawer>
       {/* <SellPrint className="SellPrint" ref={componentRef} /> */}
-      <div className='SellPrint' ref={componentRef}>
+      <div className="SellPrint" ref={componentRef}>
         <table className="body-wrap">
-          <tbody><tr>
-            <td></td>
-            <td className="container" width="600">
-              <div className="content">
-                <table className="main" width="100%" cellPadding="0" cellSpacing="0">
-                  <tbody><tr>
-                    <td className="content-wrap aligncenter">
-                      <table width="100%" cellPadding="0" cellSpacing="0">
-                        <tbody><tr>
-                          <td className="content-block">
-                            <h2>Cảm ơn quý khách</h2>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="content-block">
-                            <table className="invoice">
-                              <tbody><tr>
-                                <td>{nameGust}<br />{phoneGust}<br />{addressGust}</td>
+          <tbody>
+            <tr>
+              <td></td>
+              <td className="container" width="600">
+                <div className="content">
+                  <table
+                    className="main"
+                    width="100%"
+                    cellPadding="0"
+                    cellSpacing="0"
+                  >
+                    <tbody>
+                      <tr>
+                        <td className="content-wrap aligncenter">
+                          <table width="100%" cellPadding="0" cellSpacing="0">
+                            <tbody>
+                              <tr>
+                                <td className="content-block">
+                                  <h2>Cảm ơn quý khách</h2>
+                                </td>
                               </tr>
                               <tr>
-                                <td>
-                                  <table className="invoice-items" cellPadding="0" cellSpacing="0">
+                                <td className="content-block">
+                                  <table className="invoice">
                                     <tbody>
-                                      {productsBuying.map((value, index) => {
-                                        return (
-                                          <tr key={index}>
-                                            <td>{value.productName}</td>
-                                            <td className="alignright">{formatPrice(value.priceSell * value.amout)}</td>
-                                          </tr>
-                                        )
-                                      })}
-                                      <tr className="total">
-                                        <td className="alignright" width="80%">Tổng tiền</td>
-                                        <td className="alignright">{formatPrice(sum)}</td>
+                                      <tr>
+                                        <td>
+                                          {nameGust}
+                                          <br />
+                                          {phoneGust}
+                                          <br />
+                                          {addressGust}
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td>
+                                          <table
+                                            className="invoice-items"
+                                            cellPadding="0"
+                                            cellSpacing="0"
+                                          >
+                                            <tbody>
+                                              {productsBuying.map(
+                                                (value, index) => {
+                                                  return (
+                                                    <tr key={index}>
+                                                      <td>
+                                                        {value.productName}
+                                                      </td>
+                                                      <td className="alignright">
+                                                        {formatPrice(
+                                                          value.priceSell *
+                                                            value.amout
+                                                        )}
+                                                      </td>
+                                                    </tr>
+                                                  );
+                                                }
+                                              )}
+                                              <tr className="total">
+                                                <td
+                                                  className="alignright"
+                                                  width="80%"
+                                                >
+                                                  Tổng tiền
+                                                </td>
+                                                <td className="alignright">
+                                                  {formatPrice(sum)}
+                                                </td>
+                                              </tr>
+                                            </tbody>
+                                          </table>
+                                        </td>
                                       </tr>
                                     </tbody>
                                   </table>
                                 </td>
                               </tr>
-                              </tbody></table>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="content-block">
-                            {getTime()}
-                          </td>
-                        </tr>
-                        <tr>
-                          {/* <td className="content-block">
+                              <tr>
+                                <td className="content-block">{getTime()}</td>
+                              </tr>
+                              <tr>
+                                {/* <td className="content-block">
                               Company Inc. 123 Van Ness, San Francisco 94102
                           </td> */}
-                        </tr>
-                        </tbody></table>
-                    </td>
-                  </tr>
-                  </tbody></table>
-                <div className="footer">
-                  {/* <table width="100%">
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div className="footer">
+                    {/* <table width="100%">
                     <tbody><tr>
                       <td className="aligncenter content-block">Questions? Email <a href="mailto:">support@company.inc</a></td>
                     </tr>
                     </tbody></table> */}
-                </div></div>
-            </td>
-            <td></td>
-          </tr>
-          </tbody></table>
+                  </div>
+                </div>
+              </td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </>
   );

@@ -3,16 +3,14 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 const dotenv = require('dotenv');
 
-
-// call dotenv and it will return an Object with a parsed key 
+// call dotenv and it will return an Object with a parsed key
 const env = dotenv.config().parsed;
-  
+
 // reduce it to a nice object, the same as before
 const envKeys = Object.keys(env).reduce((prev, next) => {
   prev[`process.env.${next}`] = JSON.stringify(env[next]);
   return prev;
 }, {});
-
 
 module.exports = {
   devtool: 'inline-source-map',
@@ -20,24 +18,24 @@ module.exports = {
   output: {
     path: path.join(__dirname, 'dist'),
     publicPath: '/',
-    filename: 'bundle.js'
+    filename: 'bundle.js',
   },
   module: {
     rules: [
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        use: ['babel-loader', 'eslint-loader']
+        use: ['babel-loader', 'eslint-loader'],
       },
       {
         test: /\.(css|scss)$/,
-        use: ['style-loader', 'css-loader', 'sass-loader']
+        use: ['style-loader', 'css-loader', 'sass-loader'],
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf|jpg|png|gif|svg|ico)$/,
-        use: ['file-loader']
-      }
-    ]
+        use: ['file-loader'],
+      },
+    ],
   },
   resolve: {
     extensions: ['.js', '.jsx'],
@@ -57,18 +55,24 @@ module.exports = {
       dashboard: path.resolve(__dirname, 'src/modules/Dashboard'),
       auth: path.resolve(__dirname, 'src/modules/Auth'),
       commons: path.resolve(__dirname, 'src/modules/Commons'),
-    }
 
+      product: path.resolve(__dirname, 'src/modules/DanhMuc'),
+      priceSetting: path.resolve(__dirname, 'src/modules/DanhMuc'),
+      guest: path.resolve(__dirname, 'src/modules/Guest'),
+      staff: path.resolve(__dirname, 'src/modules/Staff'),
+      invoice: path.resolve(__dirname, 'src/modules/Invoice'),
+      sell: path.resolve(__dirname, 'src/modules/SELL'),
+    },
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: path.resolve('./public/index.html'),
     }),
-    new webpack.DefinePlugin(envKeys)
+    new webpack.DefinePlugin(envKeys),
   ],
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
     historyApiFallback: true,
-    port: 4000
-  }
+    port: 4000,
+  },
 };

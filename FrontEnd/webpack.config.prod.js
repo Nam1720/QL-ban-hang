@@ -13,7 +13,7 @@ const dotenv = require('dotenv');
 // const WebpackBundleAnalyzer = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 module.exports = () => {
-  // call dotenv and it will return an Object with a parsed key 
+  // call dotenv and it will return an Object with a parsed key
   const env = dotenv.config().parsed;
   const envKeys = Object.keys(env).reduce((prev, next) => {
     prev[`process.env.${next}`] = JSON.stringify(env[next]);
@@ -34,17 +34,17 @@ module.exports = () => {
         {
           test: /\.(js|jsx)$/,
           exclude: /node_modules/,
-          use: ['babel-loader', 'eslint-loader']
+          use: ['babel-loader', 'eslint-loader'],
         },
         {
           test: /\.(css|scss)$/,
-          use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
+          use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
         },
         {
           test: /\.(woff|woff2|eot|ttf|otf|jpg|png|gif|svg|ico)$/,
-          use: ['file-loader']
-        }
-      ]
+          use: ['file-loader'],
+        },
+      ],
     },
     resolve: {
       extensions: ['.js', '.jsx'],
@@ -64,21 +64,28 @@ module.exports = () => {
         dashboard: path.resolve(__dirname, 'src/modules/Dashboard'),
         auth: path.resolve(__dirname, 'src/modules/Auth'),
         commons: path.resolve(__dirname, 'src/modules/Commons'),
-      }
+
+        product: path.resolve(__dirname, 'src/modules/DanhMuc'),
+        priceSetting: path.resolve(__dirname, 'src/modules/DanhMuc'),
+        guest: path.resolve(__dirname, 'src/modules/Guest'),
+        staff: path.resolve(__dirname, 'src/modules/Staff'),
+        invoice: path.resolve(__dirname, 'src/modules/Invoice'),
+        sell: path.resolve(__dirname, 'src/modules/SELL'),
+      },
     },
     plugins: [
       new webpack.DefinePlugin(envKeys),
       new webpack.DefinePlugin({
         'process.env': {
-          'NODE_ENV': JSON.stringify('production')
-        }
+          NODE_ENV: JSON.stringify('production'),
+        },
       }),
       // new ServiceWorkerWebpackPlugin({
       //   entry: path.join(__dirname, 'src/sw.js')
       // }),
       new MiniCssExtractPlugin({
         filename: '[name].[contenthash].css',
-        chunkFilename: '[id].[contenthash].css'
+        chunkFilename: '[id].[contenthash].css',
       }),
       new CleanWebpackPlugin({
         cleanOnceBeforeBuildPatterns: ['dist'],
@@ -87,8 +94,8 @@ module.exports = () => {
       // new WebpackBundleAnalyzer(),
       new HtmlWebpackPlugin({
         template: path.resolve('./public/index.html'),
-        favicon: path.resolve('./public/favicon.ico')
-      })
+        favicon: path.resolve('./public/favicon.ico'),
+      }),
       // new WorkboxPlugin.GenerateSW({
       //   // these options encourage the ServiceWorkers to get in there fast
       //   // and not allow any straggling "old" SWs to hang around
@@ -108,17 +115,17 @@ module.exports = () => {
     ],
     optimization: {
       splitChunks: {
-        chunks: 'all'
+        chunks: 'all',
       },
-      minimizer: [new TerserPlugin()]
+      minimizer: [new TerserPlugin()],
     },
     devServer: {
       contentBase: path.join(__dirname, 'dist'),
       historyApiFallback: true,
-      port: 4000
+      port: 4000,
     },
     stats: {
-      children: true
-    }
-  }
+      children: true,
+    },
+  };
 };

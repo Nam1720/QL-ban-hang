@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Drawer, Button, Input, Space, Form, Divider } from 'antd';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   formatPrice,
   openNotificationWithIcon,
@@ -26,25 +26,10 @@ const SellDrawerOrder = () => {
     const date = new Date().toString()
     return date
   }
-
-  // const [codeProduct, setCodeProduct] = useState();
-  // const [nameProduct, setNameProduct] = useState();
-  // const [countProduct, setCountProduct] = useState();
-  // const [priceSell, setPriceSell] = useState();
-  // const [priceCapital, setPriceCapital] = useState();
+  const dispatch = useDispatch();
 
   let { nameGust, addressGust, phoneGust } = newCustomer;
-  //get productByIng
-  // const checkProductBuyIng = () => {
-  //   productsBuying.map((item) => {
-  //     setCodeProduct(item.codeProduct);
-  //     setNameProduct(item.productName);
-  //     setCountProduct(item.amout);
-  //     setPriceSell(item.priceSell);
-  //     setPriceCapital(item.priceCapital);
-  //   });
-  // };
-  // get customer info
+
   const debounceRef = useRef();
   const handleChangeInput = (value) => {
     if (debounceRef.current) {
@@ -103,6 +88,7 @@ const SellDrawerOrder = () => {
         if (res.data.success) {
           openNotificationWithIcon('success', res.data.message);
           handlePrint()
+          dispatch(setProductsBuying([]));
           onClose();
         } else {
           openNotificationWithIcon('error', res.data.message);
@@ -114,7 +100,7 @@ const SellDrawerOrder = () => {
   // event
   const showDrawer = () => {
     if (productsBuying.length == 0 || customer == '') {
-      return alert('Vui lòng chọn sản phẩm hoặc khách hàng');
+      return openNotificationWithIcon('error', 'Chọn sản phẩm hoặc khách hàng');
     } else {
       return setVisible(true);
     }

@@ -1,3 +1,4 @@
+import axios from 'axios';
 import config from 'config';
 import { getCookie, delCookie, saveCookie} from 'helpers/funcs';
 
@@ -31,11 +32,28 @@ export const isLogin = () => {
   return token && authInfo
 }
 
+export const verifyToken = async (callback) => {
+  const tokenAdmin = getCookie(config.user_token_key)
+
+  const res = await axios.post('http://localhost:3000/api/admin/verifyToken', {
+    tokenAdmin
+  })
+
+  
+  if (res.data.success) {
+    return callback(true)
+  } else {
+    return callback(false)
+  }
+
+}
+
 export default { 
   getAccessToken, 
   getAuth, 
   saveAuth, 
   saveToken, 
   destroyLogged, 
-  isLogin 
+  isLogin,
+  verifyToken
 };

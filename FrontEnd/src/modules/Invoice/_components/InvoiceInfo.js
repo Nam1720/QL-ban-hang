@@ -33,11 +33,11 @@ const InvoiceModalInfo = () => {
     },
     {
       title: 'Tên sản phẩm',
-      dataIndex: 'nameProduct',
+      dataIndex: 'productName',
     },
     {
       title: 'Số lượng',
-      dataIndex: 'countProduct',
+      dataIndex: 'amout',
     },
     {
       title: 'Giá bán',
@@ -48,7 +48,7 @@ const InvoiceModalInfo = () => {
       title: 'Thành tiền',
       dataIndex: 'total',
       render: (text, record) => (
-        <span>{ formatNumber(handleTotal(record.countProduct, record.priceSell)) }</span>
+        <span>{ formatNumber(handleTotal(record.amout, record.priceSell)) }</span>
       )
     },
   ];

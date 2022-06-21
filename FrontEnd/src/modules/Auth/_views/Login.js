@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Checkbox, Input, Button } from 'antd';
+import { Form, Input, Button, Radio } from 'antd';
 import { useDispatch } from 'react-redux';
 import { setLoginStatus } from 'auth/_store/authSlice';
 import useRouter from 'hooks/useRouter';
@@ -24,15 +24,20 @@ const Login = () => {
   const [form] = Form.useForm();
 
   const onSubmitLogin = (values) => {
-    const { email, password } = values;
+    const { email, password, type } = values;
     setLoading(true);
-    login(email, password)
+    login(email, password, type)
       .then((res) => {
         if (res.data.success) {
           saveToken(res.data.accessToken);
           saveAuth(res.data.username);
           dispatch(setLoginStatus(true));
-          router.push('/');
+          console.log( form.getFieldValue('type') )
+          if ( form.getFieldValue('type') == 'Admin' ) {
+            router.push('/');
+          } else {
+            router.push('/sell');
+          }
         } else {
           openNotificationWithIcon('error', res.data.message);
         }
@@ -61,6 +66,11 @@ const Login = () => {
   //   return messageLoginErr ? <Form.Item><div className="ant-form-item-explain ant-form-item-explain-error"><div role="alert">{ messageLoginErr }</div></div></Form.Item> : null;
   // }
 
+  const optionsWith = [
+    { label: 'Admin', value: 'Admin' },
+    { label: 'User', value: 'User' },
+  ];
+
   return (
     <div className="login full-screen d-flex-center">
       <div className="login__wrap bg-color-light">
@@ -84,17 +94,17 @@ const Login = () => {
           >
             <Input.Password placeholder="Password" />
           </Form.Item>
-          <Form.Item>
-            <div className="d-flex justify-content-between">
-              <Form.Item name="remember" valuePropName="checked" noStyle>
-                <Checkbox>Remember me</Checkbox>
-              </Form.Item>
-              <a className="login-form-forgot" href="">
-                Forgot password
-              </a>
-            </div>
-          </Form.Item>
           {/* { messageErrTpl()} */}
+          <Form.Item name="type" rules={[{ required: true }]}>
+            <Radio.Group
+              options={optionsWith}
+              // onChange={onChange4}
+              value={'Admin'}
+              // defaultValue={'Admin'}
+              optionType="button"
+              buttonStyle="solid"
+            />
+          </Form.Item>
           <Form.Item>
             <Button
               loading={loading}

@@ -1,6 +1,7 @@
 const argon2 = require('argon2')
 const jwt = require('jsonwebtoken')
 const Admin = require('../../models/Admin')
+const User = require('../../models/User')
 
 class adminController {
     // [POST] /api/admin/register
@@ -46,43 +47,83 @@ class adminController {
 
     // [POST] /api/admin/login
     async login(req, res) {
-        const { username, password } = req.body
+        const { username, password, type } = req.body
 
-        if (!username || !password) {
-            return res.status(200).json({
-                success: false,
-                message: 'Missing username or password'
-            })
-        }
-
-        try {
-            const user = await Admin.findOne({ username })
-            if (!user) {
+        if (type == "Admin") {
+            if (!username || !password) {
                 return res.status(200).json({
                     success: false,
-                    message: 'Tài khoản mật khẩu không chính xác'
+                    message: 'Missing username or password'
                 })
             }
 
-            const passwordValid = await argon2.verify(user.password, password)
-            if (!passwordValid) {
+            try {
+                const user = await Admin.findOne({ username })
+                if (!user) {
+                    return res.status(200).json({
+                        success: false,
+                        message: 'Tài khoản mật khẩu không chính xác'
+                    })
+                }
+
+                const passwordValid = await argon2.verify(user.password, password)
+                if (!passwordValid) {
+                    return res.status(200).json({
+                        success: false,
+                        message: 'Tài khoản mật khẩu không chính xác'
+                    })
+                }
+
+                const accessToken = jwt.sign({ userId: user._id, username }, 'adminngominhthuan')
+
+                res.json({
+                    success: true,
+                    message: 'Đăng nhập thành công',
+                    accessToken,
+                    userId: user._id,
+                    username: username,
+                })
+            } catch (error) {
+
+            }
+        } else if (type == 'User') {
+            if (!username || !password) {
                 return res.status(200).json({
                     success: false,
-                    message: 'Tài khoản mật khẩu không chính xác'
+                    message: 'Missing username or password'
                 })
             }
 
-            const accessToken = jwt.sign({ userId: user._id, username }, 'adminngominhthuan')
+            try {
+                const user = await User.findOne({ username })
+                if (!user) {
+                    return res.status(200).json({
+                        success: false,
+                        message: 'Tài khoản mật khẩu không chính xác'
+                    })
+                }
 
-            res.json({
-                success: true,
-                message: 'Đăng nhập thành công',
-                accessToken,
-                userId: user._id,
-                username: username,
-            })
-        } catch (error) {
+                const passwordValid = await argon2.verify(user.password, password)
+                if (!passwordValid) {
+                    return res.status(200).json({
+                        success: false,
+                        message: 'Tài khoản mật khẩu không chính xác'
+                    })
+                }
 
+                const accessToken = jwt.sign({ userId: user._id, username, nameStaff: user.nameStaff }, 'userngominhthuan')
+
+                res.json({
+                    success: true,
+                    message: 'Đăng nhập thành công',
+                    accessToken,
+                    userId: user._id,
+                    username: username,
+                    nameStaff: user.nameStaff
+                })
+            } catch (error) {
+
+            }
         }
     }
 

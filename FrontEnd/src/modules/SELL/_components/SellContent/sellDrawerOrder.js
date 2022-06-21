@@ -6,7 +6,8 @@ import {
   openNotificationWithIcon,
 } from '../../../../helpers/funcs';
 import { createInvoice, findCustomer } from '../../_api';
-import { setProductsBuying } from '../../_store/sellSlice';
+import { useReactToPrint } from 'react-to-print';
+import './SellPrint.scss';
 
 const SellDrawerOrder = () => {
   const [visible, setVisible] = useState(false);
@@ -15,6 +16,16 @@ const SellDrawerOrder = () => {
   const customer = useSelector((state) => state.sell.customer);
   const productsBuying = useSelector((state) => state.sell.productsBuying);
   const [priceRefunds, setPriceRefunds] = useState();
+
+  const componentRef = useRef();
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
+
+  const getTime = () => {
+    const date = new Date().toString()
+    return date
+  }
   const dispatch = useDispatch();
 
   let { nameGust, addressGust, phoneGust } = newCustomer;
@@ -64,21 +75,26 @@ const SellDrawerOrder = () => {
   // call api incoice
 
   const onSubmit = () => {
-    createInvoice({
-      nameGuest: nameGust,
-      addressGuest: addressGust,
-      phoneGuest: phoneGust,
-      productsBuying: productsBuying,
-      totalMoney: sum,
-    }).then((res) => {
-      if (res.data.success) {
-        openNotificationWithIcon('success', res.data.message);
-        onClose();
-        dispatch(setProductsBuying([]));
-      } else {
-        openNotificationWithIcon('error', res.data.message);
-      }
-    });
+    if (!priceRefunds) {
+      return alert('Nhập số tiền khách hàng trả!');
+    } else {
+      createInvoice({
+        nameGuest: nameGust,
+        addressGuest: addressGust,
+        phoneGuest: phoneGust,
+        productsBuying: productsBuying,
+        totalMoney: sum,
+      }).then((res) => {
+        if (res.data.success) {
+          openNotificationWithIcon('success', res.data.message);
+          handlePrint()
+          dispatch(setProductsBuying([]));
+          onClose();
+        } else {
+          openNotificationWithIcon('error', res.data.message);
+        }
+      });
+    }
   };
 
   // event
@@ -113,7 +129,7 @@ const SellDrawerOrder = () => {
           paddingBottom: 80,
         }}
       >
-        <Form layout="vertical" hideRequiredMark>
+        <Form layout="vertical" hideRequiredMark >
           <div className="d-flex-center1 justify-content-between">
             <h2 className="">Khách hàng: </h2>
             <h2>{nameGust}</h2>
@@ -156,6 +172,77 @@ const SellDrawerOrder = () => {
           </Space>
         </Form>
       </Drawer>
+      {/* <SellPrint className="SellPrint" ref={componentRef} /> */}
+      <div className='SellPrint' ref={componentRef}>
+        <table className="body-wrap">
+          <tbody><tr>
+            <td></td>
+            <td className="container" width="600">
+              <div className="content">
+                <table className="main" width="100%" cellPadding="0" cellSpacing="0">
+                  <tbody><tr>
+                    <td className="content-wrap aligncenter">
+                      <table width="100%" cellPadding="0" cellSpacing="0">
+                        <tbody><tr>
+                          <td className="content-block">
+                            <h2>Cảm ơn quý khách</h2>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="content-block">
+                            <table className="invoice">
+                              <tbody><tr>
+                                <td>{nameGust}<br />{phoneGust}<br />{addressGust}</td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <table className="invoice-items" cellPadding="0" cellSpacing="0">
+                                    <tbody>
+                                      {productsBuying.map((value, index) => {
+                                        return (
+                                          <tr key={index}>
+                                            <td>{value.productName}</td>
+                                            <td className="alignright">{formatPrice(value.priceSell * value.amout)}</td>
+                                          </tr>
+                                        )
+                                      })}
+                                      <tr className="total">
+                                        <td className="alignright" width="80%">Tổng tiền</td>
+                                        <td className="alignright">{formatPrice(sum)}</td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+                              </tbody></table>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="content-block">
+                            {getTime()}
+                          </td>
+                        </tr>
+                        <tr>
+                          {/* <td className="content-block">
+                              Company Inc. 123 Van Ness, San Francisco 94102
+                          </td> */}
+                        </tr>
+                        </tbody></table>
+                    </td>
+                  </tr>
+                  </tbody></table>
+                <div className="footer">
+                  {/* <table width="100%">
+                    <tbody><tr>
+                      <td className="aligncenter content-block">Questions? Email <a href="mailto:">support@company.inc</a></td>
+                    </tr>
+                    </tbody></table> */}
+                </div></div>
+            </td>
+            <td></td>
+          </tr>
+          </tbody></table>
+      </div>
     </>
   );
 };

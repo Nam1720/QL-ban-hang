@@ -12,6 +12,7 @@ const sellSlice = createSlice({
       addressGuest: '',
       phoneGuest: '',
     },
+    product: [],
   },
   reducers: {
     setProductsBuying(state, action) {
@@ -26,6 +27,9 @@ const sellSlice = createSlice({
     addListGust(state, action) {
       state.listGuest = [...state.listGuest, action.payload];
     },
+    setProduct(state, action) {
+      state.product = action.payload;
+    },
   },
 });
 
@@ -35,6 +39,7 @@ export const {
   setCustomer,
   addListGust,
   setValueSelect,
+  setProduct,
 } = sellSlice.actions;
 
 export default sellSlice.reducer;

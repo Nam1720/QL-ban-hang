@@ -37,3 +37,10 @@ export const createInvoice = (payload) => {
     paymentType: 'Tiền mặt',
   });
 };
+
+//invoi list
+export const getListInvoice = () => {
+  return axios.post('http://localhost:3000/api/invoice/get-list', {
+    tokenAdmin: cookie.get('ustkrohtodev')
+  })
+}

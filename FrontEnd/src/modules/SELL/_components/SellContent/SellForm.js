@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Avatar } from 'antd';
+import { Card, Avatar, Button } from 'antd';
 import { getProduct } from '../../_api';
 import {
   openNotificationWithIcon,
   formatPriceVND,
 } from '../../../../helpers/funcs';
 import { useSelector, useDispatch } from 'react-redux';
-import { setProductsBuying } from '../../_store/sellSlice';
+import { setProduct, setProductsBuying } from '../../_store/sellSlice';
 import SellDrawerOrder from './sellDrawerOrder';
 
 const SellForm = () => {
@@ -21,6 +21,7 @@ const SellForm = () => {
       .then((res) => {
         if (res.data.success) {
           setData(res.data.GoodList);
+          dispatch(setProduct(res.data.GoodList));
         } else {
           openNotificationWithIcon('error', res.data.message);
         }
@@ -40,9 +41,18 @@ const SellForm = () => {
 
     if (obj !== undefined) {
       productsBuying.map((o) => {
-        if (o.codeProduct === value.codeProduct && o.inventory > o.amout) {
-          newArray.push({ ...o, amout: o.amout + 1 });
-          dispatch(setProductsBuying([...newArray]));
+        if (o.codeProduct === value.codeProduct) {
+          if (o.inventory > o.amout) {
+            newArray.push({ ...o, amout: o.amout + 1 });
+            dispatch(setProductsBuying([...newArray]));
+          } else {
+            openNotificationWithIcon(
+              'error',
+              `Sản phẩm ${o.productName} hết hàng`
+            );
+            newArray.push(o);
+            dispatch(setProductsBuying([...newArray]));
+          }
         } else {
           newArray.push(o);
           dispatch(setProductsBuying([...newArray]));
@@ -57,13 +67,15 @@ const SellForm = () => {
     <>
       <div className="d-flex flex-wrap" style={{ marginTop: '30px' }}>
         {data.map((value, index) => (
-          <Card
+          <Button
             key={index}
             style={{
               width: '31%',
               margin: '12px 12px 0 0',
               cursor: 'pointer',
+              height: 'auto',
             }}
+            disabled={value.inventory == 0}
             onClick={() => handleClickProduct(value)}
           >
             <Meta
@@ -71,19 +83,9 @@ const SellForm = () => {
               title={value.productName}
               description={formatPriceVND(value.priceSell)}
             />
-          </Card>
+          </Button>
         ))}
       </div>
-      {/* <Button
-        type="primary"
-        className=""
-        size={'large'}
-        onClick={() => {
-          setActiveModal(visibleMdal);
-        }}
-      >
-        Thanh toán
-      </Button> */}
       <SellDrawerOrder />
     </>
   );

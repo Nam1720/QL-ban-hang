@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Input, Dropdown, Menu } from 'antd';
 import {
   SearchOutlined,
@@ -9,10 +9,16 @@ import {
 import useRouter from 'hooks/useRouter';
 import { destroyLogged } from 'utils/jwt';
 import { saveAuth } from 'utils/jwt';
+import Cookies from 'js-cookie';
 
 const SellHeader = () => {
   const router = useRouter();
   const handleButtonClick = () => {};
+  const [user, setUser] = useState('');
+
+  useEffect(() => {
+    setUser(Cookies.get('usinforohtodev'));
+  }, []);
 
   const logout = async () => {
     await destroyLogged();
@@ -62,7 +68,7 @@ const SellHeader = () => {
 
       <div className="sell__header-account">
         <Dropdown.Button onClick={handleButtonClick} overlay={menu}>
-          0399801978
+          {user}
         </Dropdown.Button>
       </div>
     </div>

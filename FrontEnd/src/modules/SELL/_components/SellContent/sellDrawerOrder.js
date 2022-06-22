@@ -76,26 +76,22 @@ const SellDrawerOrder = () => {
   // call api incoice
 
   const onSubmit = () => {
-    if (!priceRefunds) {
-      return alert('Nhập số tiền khách hàng trả!');
-    } else {
-      createInvoice({
-        nameGuest: nameGust,
-        addressGuest: addressGust,
-        phoneGuest: phoneGust,
-        productsBuying: productsBuying,
-        totalMoney: sum,
-      }).then((res) => {
-        if (res.data.success) {
-          openNotificationWithIcon('success', res.data.message);
-          handlePrint();
-          dispatch(setProductsBuying([]));
-          onClose();
-        } else {
-          openNotificationWithIcon('error', res.data.message);
-        }
-      });
-    }
+    createInvoice({
+      nameGuest: nameGust,
+      addressGuest: addressGust,
+      phoneGuest: phoneGust,
+      productsBuying: productsBuying,
+      totalMoney: sum,
+    }).then((res) => {
+      if (res.data.success) {
+        openNotificationWithIcon('success', res.data.message);
+        handlePrint();
+        dispatch(setProductsBuying([]));
+        onClose();
+      } else {
+        openNotificationWithIcon('error', res.data.message);
+      }
+    });
   };
 
   // event

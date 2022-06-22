@@ -35,7 +35,7 @@ export const isLogin = () => {
 export const verifyToken = async (callback) => {
   const tokenAdmin = getCookie(config.user_token_key)
 
-  const res = await axios.post('http://localhost:3000/api/admin/verifyToken', {
+  const res = await axios.post('https://abclike.site/api/admin/verifyToken', {
     tokenAdmin
   })
 

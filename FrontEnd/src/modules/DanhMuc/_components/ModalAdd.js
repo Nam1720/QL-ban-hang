@@ -18,7 +18,7 @@ const CategoryModalAdd = () => {
   const [previewImage, setPreviewImage] = useState('');
   const [previewTitle, setPreviewTitle] = useState('');
   const [fileList, setFileList] = useState([]);
-  const [filePath, setFilePath] = useState('http://localhost:3000/defaultProduct.png')
+  const [filePath, setFilePath] = useState('https://abclike.site/defaultProduct.png')
   const [form] = Form.useForm();
   const modalAdd = useSelector((state) => state.category.modalAdd);
   const listCategory = useSelector((state) => state.category.listCategory);
@@ -37,7 +37,7 @@ const CategoryModalAdd = () => {
           priceSell: '',
           inventory: '',
         });
-        setFilePath('http://localhost:3000/defaultProduct.png')
+        setFilePath('https://abclike.site/defaultProduct.png')
 
         handelcancel();
       } else {
@@ -78,7 +78,7 @@ const CategoryModalAdd = () => {
 
     if (newFileList[0].status == 'done') {
       const link = newFileList[0].response.filePath.split('\\')[1]
-      setFilePath(`http://localhost:3000/${link}`)
+      setFilePath(`https://abclike.site/${link}`)
     } else if (newFileList[0].status == 'error') {
       openNotificationWithIcon('error', 'Upload ảnh thất bại, vui lòng thử lại!')
     }
@@ -118,7 +118,7 @@ const CategoryModalAdd = () => {
                 <img style={{ width: '100%', height: '100%', objectFit: 'cover' }} src={filePath} />
               </div>
               <Upload
-                action="http://localhost:3000/api/good/uploadIMG"
+                action="https://abclike.site/api/good/uploadIMG"
                 fileList={fileList}
                 onPreview={handlePreview}
                 onChange={handleChange}

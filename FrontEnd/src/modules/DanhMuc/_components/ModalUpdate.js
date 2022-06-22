@@ -103,7 +103,7 @@ const ModalUpdate = () => {
 
     if (newFileList[0].status == 'done') {
       const link = newFileList[0].response.filePath.split('\\')[1];
-      setFilePath(`http://localhost:3000/${link}`);
+      setFilePath(`https://abclike.site/${link}`);
     } else if (newFileList[0].status == 'error') {
       openNotificationWithIcon(
         'error',
@@ -168,7 +168,7 @@ const ModalUpdate = () => {
                 />
               </div>
               <Upload
-                action="http://localhost:3000/api/good/uploadIMG"
+                action="https://abclike.site/api/good/uploadIMG"
                 fileList={fileList}
                 onPreview={handlePreview}
                 onChange={handleChange}
